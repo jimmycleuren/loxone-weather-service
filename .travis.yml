@@ -39,10 +39,6 @@ script:
   - composer phpstan
   # This checks that the YAML config files contain no syntax errors.
   - ./bin/console lint:yaml config --parse-tags
-  # This checks that the Twig template files contain no syntax errors.
-  - ./bin/console lint:twig templates --env=prod
-  # This checks that the XLIFF translations contain no syntax errors.
-  - ./bin/console lint:xliff translations
   # This checks that arguments injected into services match type declarations.
   - ./bin/console lint:container
   # This checks that the application doesn't use dependencies with known security vulnerabilities.

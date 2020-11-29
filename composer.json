@@ -1,4 +1,6 @@
 {
+    "name": "jimmycleuren/loxone-weather-service",
+    "description": "Emulates the loxone weather service locally",
     "type": "project",
     "license": "proprietary",
     "require": {
