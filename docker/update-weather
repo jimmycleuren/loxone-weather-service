@@ -1,0 +1,1 @@
+*/30 * * * * /usr/local/bin/php /app/bin/console app:update-weather >> /var/log/cron.log 2>&1

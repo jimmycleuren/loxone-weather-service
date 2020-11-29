@@ -1,0 +1,63 @@
+env:
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=max[direct]=0
+    - PHPUNIT_FLAGS="-v"
+    - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
+
+language: php
+os: linux
+
+# Cache composer packages so "composer install" is faster
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/symfony-bridge/.phpunit
+    - $HOME/.symfony
+
+jobs:
+  # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
+  fast_finish: true
+  include:
+    - php: 7.4
+      env: COVERAGE=true
+    - php: 7.3
+    - php: master
+  allow_failures:
+    - php: master
+
+before_install:
+  - export PATH="$HOME/.symfony/bin:$PATH"
+  - if [[ $COVERAGE == "" ]]; then phpenv config-rm xdebug.ini; fi
+  - if symfony self:version; then symfony self:update --yes ; else wget https://get.symfony.com/cli/installer -O - | bash ; fi
+
+install:
+  - composer -n install --prefer-dist
+  - ./vendor/bin/simple-phpunit install
+
+script:
+  - ./vendor/bin/simple-phpunit $PHPUNIT_FLAGS --coverage-clover build/logs/clover.xml
+  - composer phpstan
+  # This checks that the YAML config files contain no syntax errors.
+  - ./bin/console lint:yaml config --parse-tags
+  # This checks that the Twig template files contain no syntax errors.
+  - ./bin/console lint:twig templates --env=prod
+  # This checks that the XLIFF translations contain no syntax errors.
+  - ./bin/console lint:xliff translations
+  # This checks that arguments injected into services match type declarations.
+  - ./bin/console lint:container
+  # This checks that the application doesn't use dependencies with known security vulnerabilities.
+  - symfony check:security
+  - composer validate --strict
+
+after_success:
+  - |
+    if [[ $COVERAGE == true && $TRAVIS_BRANCH == "master" ]]; then
+      wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.2/php-coveralls.phar
+      php php-coveralls.phar --verbose
+    fi
+
+after_failure: "cat var/log/*.log"
+
+# After a build, send email notification with the build results
+notifications:
+  email: jimmy.cleuren@gmail.com
