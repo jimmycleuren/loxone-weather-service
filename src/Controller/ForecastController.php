@@ -16,8 +16,7 @@ class ForecastController extends AbstractController
      */
     public function index(LocationProvider $locationProvider, WeatherProvider $weatherProvider, Request $request): Response
     {
-        $coord = $request->get('coord');
-        list($lon, $lat) = explode(",", $coord);
+        list($lon, $lat) = explode(",", $request->get('coord'));
         $asl = $request->get('asl');
         $format = $request->get('format');
 
