@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/jimmycleuren/loxone-weather-service/badge.svg?branch=master)](https://coveralls.io/github/jimmycleuren/loxone-weather-service?branch=master)
+
 # Loxone weather service
 
 This is a small app to emulate the loxone weather service using weatherbit as a data source.
