@@ -21,17 +21,17 @@ class WeatherProvider {
             $weatherbit = new Weatherbit($_SERVER['WEATHERBIT_KEY']);
             $weather = $weatherbit->getNormalizedData($lat, $lon, $asl);
 
-            file_put_contents("/app/weather.json", json_encode($weather, JSON_PRETTY_PRINT));
+            file_put_contents("/tmp/weather.json", json_encode($weather, JSON_PRETTY_PRINT));
         }
     }
 
     public function getCSV()
     {
-        if (!file_exists("/app/weather.json")) {
+        if (!file_exists("/tmp/weather.json")) {
             return null;
         }
 
-        $data = json_decode(file_get_contents('/app/weather.json'));
+        $data = json_decode(file_get_contents('/tmp/weather.json'));
         $data = $data->normalized;
 
         $header = [
