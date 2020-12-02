@@ -7,10 +7,12 @@ use App\LocationProvider\LocationProvider;
 class WeatherProvider {
 
     private $locationProvider;
+    private $weatherbit;
 
-    public function __construct(LocationProvider $locationProvider)
+    public function __construct(LocationProvider $locationProvider, Weatherbit $weatherbit)
     {
         $this->locationProvider = $locationProvider;
+        $this->weatherbit = $weatherbit;
     }
 
     public function updateCache()
@@ -18,8 +20,7 @@ class WeatherProvider {
         list($lat, $lon, $asl) = $this->locationProvider->getCoordinates();
 
         if (isset($_SERVER['WEATHERBIT_KEY'])) {
-            $weatherbit = new Weatherbit($_SERVER['WEATHERBIT_KEY']);
-            $weather = $weatherbit->getNormalizedData($lat, $lon, $asl);
+            $weather = $this->weatherbit->getNormalizedData($lat, $lon, $asl);
 
             file_put_contents("/tmp/weather.json", json_encode($weather, JSON_PRETTY_PRINT));
         }

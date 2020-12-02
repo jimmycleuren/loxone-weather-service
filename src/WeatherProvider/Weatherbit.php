@@ -2,32 +2,30 @@
 
 namespace App\WeatherProvider;
 
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Weatherbit implements WeatherProviderInterface {
 
     private $key;
+    private $client;
 
-    public function __construct($key)
+    public function __construct(string $key, HttpClientInterface $client)
     {
         $this->key = $key;
+        $this->client = $client;
     }
 
     public function getCurrentWeather($lat, $lon)
     {
-        $client = HttpClient::createForBaseUri("https://api.weatherbit.io/");
-
-        $response = $client->request("GET", "/v2.0/current?key=$this->key&lat=$lat&lon=$lon");
+        $response = $this->client->request("GET", "https://api.weatherbit.io//v2.0/current?key=$this->key&lat=$lat&lon=$lon");
 
         return json_decode($response->getContent());
     }
 
     public function getForecast($lat, $lon)
     {
-        $client = HttpClient::createForBaseUri("https://api.weatherbit.io/");
-
-        $response1 = $client->request("GET", "/v2.0/forecast/hourly?key=$this->key&lat=$lat&lon=$lon");
-        $response2 = $client->request("GET", "/v2.0/forecast/daily?key=$this->key&lat=$lat&lon=$lon");
+        $response1 = $this->client->request("GET", "https://api.weatherbit.io//v2.0/forecast/hourly?key=$this->key&lat=$lat&lon=$lon");
+        $response2 = $this->client->request("GET", "https://api.weatherbit.io//v2.0/forecast/daily?key=$this->key&lat=$lat&lon=$lon");
 
         $hourly = json_decode($response1->getContent())->data;
         $daily = json_decode($response2->getContent())->data;
