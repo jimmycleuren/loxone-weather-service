@@ -5,6 +5,7 @@ namespace App\Command;
 use App\LocationProvider\LocationProvider;
 use App\WeatherProvider\Weatherbit;
 use App\WeatherProvider\WeatherProvider;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,10 +18,12 @@ class UpdateWeatherCommand extends Command
     protected static $defaultName = 'app:update-weather';
 
     private $weatherProvider;
+    private $logger;
 
-    public function __construct(WeatherProvider $weatherProvider, string $name = null)
+    public function __construct(WeatherProvider $weatherProvider, LoggerInterface $logger, string $name = null)
     {
         $this->weatherProvider = $weatherProvider;
+        $this->logger = $logger;
 
         parent::__construct($name);
     }
@@ -41,6 +44,7 @@ class UpdateWeatherCommand extends Command
 
             return Command::SUCCESS;
         } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
             $io->error($e->getMessage());
 
             return Command::FAILURE;

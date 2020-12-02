@@ -2,9 +2,11 @@
 
 namespace App\WeatherProvider;
 
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 interface WeatherProviderInterface {
 
-    public function __construct($key);
+    public function __construct(string $key, HttpClientInterface $client);
 
     public function getCurrentWeather($lat, $lon);
 

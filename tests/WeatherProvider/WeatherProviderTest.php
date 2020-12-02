@@ -3,6 +3,7 @@
 namespace App\Tests\LocationProvider;
 
 use App\LocationProvider\LocationProvider;
+use App\WeatherProvider\Weatherbit;
 use App\WeatherProvider\WeatherProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -14,7 +15,10 @@ class WeatherProviderTest extends TestCase
         @unlink('/tmp/weather.json');
 
         $locationProvider = new LocationProvider(new NullLogger());
-        $weatherProvider = new WeatherProvider($locationProvider);
+
+        $weatherbit = $this->prophesize(Weatherbit::class);
+
+        $weatherProvider = new WeatherProvider($locationProvider, $weatherbit->reveal());
 
         $this->assertEquals(null, $weatherProvider->getCSV());
 
