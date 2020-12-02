@@ -15,7 +15,7 @@
         "symfony/framework-bundle": "5.1.*",
         "symfony/http-client": "5.1.*",
         "symfony/monolog-bundle": "^3.6",
-        "symfony/yaml": "5.1.*"
+        "symfony/yaml": "5.2.*"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12.58",
