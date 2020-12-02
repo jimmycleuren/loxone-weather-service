@@ -3,6 +3,7 @@ env:
     - SYMFONY_DEPRECATIONS_HELPER=max[direct]=0
     - PHPUNIT_FLAGS="-v"
     - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
+    - XDEBUG_MODE=coverage
 
 language: php
 os: linux
