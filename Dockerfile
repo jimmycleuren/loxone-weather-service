@@ -3,7 +3,7 @@ FROM php:7.4-fpm
 ADD . /app
 
 RUN apt-get update
-RUN apt-get install -y zip git procps supervisor cron setfacl
+RUN apt-get install -y zip git procps supervisor cron acl
 
 WORKDIR /app
 
