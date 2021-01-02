@@ -16,8 +16,6 @@ This is a small app to emulate the loxone weather service using weatherbit as a 
 - docker-compose up -d
 
 ## Limitations
-- Currently, only 1 miniserver is supported. Support for multiple miniservers will be added in the future
-- The first request from your miniserver will only be used to store it's coordinates, it will not return any weather data. All requests after that will return the weather for the requested coordinates.
 - Your miniserver will also check if you have a valid weather subscription (through service monitoring) and show you a warning that you do not have an active weather service. In the future, this will be handled by the application as well, so the warning disappears.
 
 ## Credits

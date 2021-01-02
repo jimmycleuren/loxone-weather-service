@@ -10,22 +10,24 @@ class LocationProviderTest extends TestCase
 {
     public function testLocation()
     {
-        @unlink("/tmp/coords.json");
+        @unlink("/tmp/locations.json");
 
         $locationProvider = new LocationProvider(new NullLogger());
 
-        list($lat, $lon, $asl) = $locationProvider->getCoordinates();
+        list($lat, $lon, $asl) = $locationProvider->getCoordinates("test");
 
         $this->assertEquals("50.0000", $lat);
         $this->assertEquals("5.0000", $lon);
         $this->assertEquals("100", $asl);
 
-        $locationProvider->setCoordinates("60.0000", "6.0000", "200");
+        $locationProvider->setCoordinates("test", "60.0000", "6.0000", "200");
 
-        list($lat, $lon, $asl) = $locationProvider->getCoordinates();
+        list($lat, $lon, $asl) = $locationProvider->getCoordinates("test");
 
         $this->assertEquals("60.0000", $lat);
         $this->assertEquals("6.0000", $lon);
         $this->assertEquals("200", $asl);
+
+        $this->assertEquals(["test"], $locationProvider->getUsers());
     }
 }
