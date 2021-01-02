@@ -17,7 +17,6 @@ class LocationProvider
     public function getUsers()
     {
         if (file_exists($this->dataFile)) {
-            $this->logger->info("Reading location file");
 
             $data = json_decode(file_get_contents($this->dataFile), true);
 
