@@ -3,37 +3,52 @@
 namespace App\WeatherProvider;
 
 use App\LocationProvider\LocationProvider;
+use Psr\Log\LoggerInterface;
 
 class WeatherProvider {
 
     private $locationProvider;
     private $weatherbit;
+    private $logger;
 
-    public function __construct(LocationProvider $locationProvider, Weatherbit $weatherbit)
+    public function __construct(LocationProvider $locationProvider, Weatherbit $weatherbit, LoggerInterface $logger)
     {
         $this->locationProvider = $locationProvider;
         $this->weatherbit = $weatherbit;
+        $this->logger = $logger;
     }
 
     public function updateCache()
     {
-        list($lat, $lon, $asl) = $this->locationProvider->getCoordinates();
+        $data = [];
 
-        if (isset($_SERVER['WEATHERBIT_KEY'])) {
-            $weather = $this->weatherbit->getNormalizedData($lat, $lon, $asl);
+        $this->logger->info("Updating cache");
+        foreach ($this->locationProvider->getUsers() as $user) {
 
-            file_put_contents("/tmp/weather.json", json_encode($weather, JSON_PRETTY_PRINT));
+            list($lat, $lon, $asl) = $this->locationProvider->getCoordinates($user);
+
+            if (isset($_SERVER['WEATHERBIT_KEY'])) {
+                $this->logger->info("Updating cache for $user");
+                $data[$user] = $this->weatherbit->getNormalizedData($lat, $lon, $asl);
+            }
         }
+
+        file_put_contents("/tmp/weather.json", json_encode($data, JSON_PRETTY_PRINT));
     }
 
-    public function getCSV()
+    public function getCSV($user)
     {
         if (!file_exists("/tmp/weather.json")) {
             return null;
         }
 
         $data = json_decode(file_get_contents('/tmp/weather.json'));
-        $data = $data->normalized;
+
+        if (!isset($data->$user)) {
+            return null;
+        }
+
+        $data = $data->$user->normalized;
 
         $header = [
             '',
