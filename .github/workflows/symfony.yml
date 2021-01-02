@@ -69,6 +69,8 @@ jobs:
         run: composer validate
 
       - name: Run phpunit
+        env:
+          WEATHERBIT_KEY: ${{ secrets.WEATHERBIT_KEY }}
         run: ./vendor/bin/simple-phpunit --coverage-clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
