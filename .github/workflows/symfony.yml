@@ -1,0 +1,80 @@
+name: Loxone Weather Service CI/CD
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  XDEBUG_MODE: coverage
+  SYMFONY_DEPRECATIONS_HELPER: max[direct]=0
+
+jobs:
+  symfony:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions: ['7.3', '7.4', '8.0']
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          coverage: pcov
+          tools: pecl
+
+      - name: Install symfony
+        run: export PATH="$HOME/.symfony/bin:$PATH" ; if symfony self:version; then symfony self:update --yes ; else wget https://get.symfony.com/cli/installer -O - | bash ; fi
+
+      - uses: actions/checkout@v2
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Install phpunit
+        run: ./vendor/bin/simple-phpunit install
+
+      - name: Create folders
+        run: mkdir build
+
+      - name: Run phpstan
+        run: composer phpstan
+
+      - name: Lint yaml
+        run: ./bin/console lint:yaml config --parse-tags
+
+      - name: Lint container
+        run: ./bin/console lint:container
+
+      - name: Check security
+        run: export PATH="$HOME/.symfony/bin:$PATH" ; symfony check:security
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Run phpunit
+        run: ./vendor/bin/simple-phpunit --coverage-clover build/logs/clover.xml
+
+      - name: Upload coverage results to Coveralls
+        if: ${{ matrix.php-versions == '7.4' }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -v
