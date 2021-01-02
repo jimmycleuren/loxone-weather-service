@@ -75,6 +75,11 @@ class WeatherProvider {
         }
 
         return
+            "<mb_metadata>\n".
+            "id;name;longitude;latitude;height (m.asl.);country;timezone;utc-timedifference;sunrise;sunset;\n".
+            "local date;weekday;local time;temperature(C);feeledTemperature(C);windspeed(km/h);winddirection(degr);wind gust(km/h);low clouds(%);medium clouds(%);high clouds(%);precipitation(mm);probability of Precip(%);snowFraction;sea level pressure(hPa);relative humidity(%);CAPE;picto-code;radiation (W/m2)\n".
+            "</mb_metadata>\n".
+            "<valid_until>2100-01-01</valid_until>\n".
             "<station>\n".
             implode(";", $header)."\n".
             implode("\n", $forecasts)."\n".
