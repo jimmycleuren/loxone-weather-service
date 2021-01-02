@@ -1,0 +1,7 @@
+services:
+  App\WeatherProvider\WeatherProvider:
+    arguments:
+      - "@App\\LocationProvider\\LocationProvider"
+      - "@App\\WeatherProvider\\Weatherbit"
+      - "@logger"
+    public: true
