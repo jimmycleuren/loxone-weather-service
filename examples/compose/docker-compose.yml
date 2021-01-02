@@ -1,0 +1,15 @@
+version: '2'
+services:
+  nginx:
+    image: nginx
+    depends_on:
+      - php
+    ports:
+      - "6066:80"
+    volumes:
+      - ./symfony.conf:/etc/nginx/conf.d/symfony.conf:ro
+
+  php:
+    image: jimmycleuren/loxone-weather-service
+    environment:
+      - WEATHERBIT_KEY=<weatherbit-key>
