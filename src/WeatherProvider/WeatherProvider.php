@@ -44,11 +44,11 @@ class WeatherProvider {
 
         $data = json_decode(file_get_contents('/tmp/weather.json'));
 
-        if (!isset($data[$user])) {
+        if (!isset($data->$user)) {
             return null;
         }
 
-        $data = $data[$user]->normalized;
+        $data = $data->$user->normalized;
 
         $header = [
             '',

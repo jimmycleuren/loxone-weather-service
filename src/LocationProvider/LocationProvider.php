@@ -19,7 +19,7 @@ class LocationProvider
         if (file_exists($this->dataFile)) {
             $this->logger->info("Reading location file");
 
-            $data = json_decode(file_get_contents($this->dataFile));
+            $data = json_decode(file_get_contents($this->dataFile), true);
 
             return array_keys($data);
         }
@@ -29,29 +29,24 @@ class LocationProvider
 
     public function getCoordinates($user)
     {
-        $lat = $_SERVER['LAT'];
-        $lon = $_SERVER['LON'];
-        $asl = $_SERVER['ASL'];
-
-        if (file_exists("/tmp/coords.json")) {
+        if (file_exists($this->dataFile)) {
             $this->logger->info("Reading location file");
 
             $data = json_decode(file_get_contents($this->dataFile));
 
-
-            $lat = $data->lat;
-            $lon = $data->lon;
-            $asl = $data->asl;
+            if (isset($data->$user)) {
+                return [$data->$user->lat, $data->$user->lon, $data->$user->asl];
+            }
         }
 
-        return [$lat, $lon, $asl];
+        return [$_SERVER['LAT'], $_SERVER['LON'], $_SERVER['ASL']];
     }
 
     public function setCoordinates($user, $lat, $lon, $asl)
     {
         $this->logger->info("Saving location for $user: lat=$lat, lon=$lon, asl=$asl");
         if (file_exists($this->dataFile)) {
-            $data = json_decode(file_get_contents($this->dataFile));
+            $data = json_decode(file_get_contents($this->dataFile), true);
         } else {
             $data = [];
         }
