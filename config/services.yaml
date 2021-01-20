@@ -32,3 +32,6 @@ services:
 
     App\WeatherProvider\Weatherbit:
         arguments: ['%env(WEATHERBIT_KEY)%']
+
+    App\WeatherProvider\OpenWeatherMap:
+        arguments: ['%env(OPENWEATHERMAP_KEY)%']
