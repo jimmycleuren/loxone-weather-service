@@ -41,7 +41,7 @@ class WeatherbitTest extends TestCase
             ]
         ]));
         $response = MockResponse::fromRequest("GET", "url", [], $response);
-        $client->request(Argument::any(), Argument::any())->willReturn($response)->shouldBeCalledTimes(3);
+        $client->request(Argument::any(), Argument::any())->willReturn($response)->shouldBeCalledTimes(2);
 
         $weatherbit = new Weatherbit("test", $client->reveal());
 
