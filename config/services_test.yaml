@@ -3,5 +3,6 @@ services:
     arguments:
       - "@App\\LocationProvider\\LocationProvider"
       - "@App\\WeatherProvider\\Weatherbit"
+      - "@App\\WeatherProvider\\OpenWeatherMap"
       - "@logger"
     public: true
