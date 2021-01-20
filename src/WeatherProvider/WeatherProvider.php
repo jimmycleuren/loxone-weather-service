@@ -9,12 +9,14 @@ class WeatherProvider {
 
     private $locationProvider;
     private $weatherbit;
+    private $openweathermap;
     private $logger;
 
-    public function __construct(LocationProvider $locationProvider, Weatherbit $weatherbit, LoggerInterface $logger)
+    public function __construct(LocationProvider $locationProvider, Weatherbit $weatherbit, OpenWeatherMap $openWeatherMap, LoggerInterface $logger)
     {
         $this->locationProvider = $locationProvider;
         $this->weatherbit = $weatherbit;
+        $this->openweathermap = $openWeatherMap;
         $this->logger = $logger;
     }
 
@@ -27,9 +29,12 @@ class WeatherProvider {
 
             list($lat, $lon, $asl) = $this->locationProvider->getCoordinates($user);
 
-            if (isset($_SERVER['WEATHERBIT_KEY'])) {
+            if (isset($_SERVER['WEATHERBIT_KEY']) && $_SERVER['WEATHERBIT_KEY']) {
                 $this->logger->info("Updating cache for $user");
                 $data[$user] = $this->weatherbit->getNormalizedData($lat, $lon, $asl);
+            } elseif (isset($_SERVER['OPENWEATHERMAP_KEY']) && $_SERVER['OPENWEATHERMAP_KEY']) {
+                $this->logger->info("Updating cache for $user");
+                $data[$user] = $this->openweathermap->getNormalizedData($lat, $lon, $asl);
             }
         }
 
