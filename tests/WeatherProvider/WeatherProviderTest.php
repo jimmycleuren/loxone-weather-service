@@ -3,6 +3,7 @@
 namespace App\Tests\LocationProvider;
 
 use App\LocationProvider\LocationProvider;
+use App\WeatherProvider\OpenWeatherMap;
 use App\WeatherProvider\Weatherbit;
 use App\WeatherProvider\WeatherProvider;
 use PHPUnit\Framework\TestCase;
@@ -17,8 +18,9 @@ class WeatherProviderTest extends TestCase
         $locationProvider = new LocationProvider(new NullLogger());
 
         $weatherbit = $this->prophesize(Weatherbit::class);
+        $openweathermap = $this->prophesize(OpenWeatherMap::class);
 
-        $weatherProvider = new WeatherProvider($locationProvider, $weatherbit->reveal(), new NullLogger());
+        $weatherProvider = new WeatherProvider($locationProvider, $weatherbit->reveal(), $openweathermap->reveal(), new NullLogger());
 
         $this->assertEquals(null, $weatherProvider->getCSV("test"));
 
