@@ -1,0 +1,15 @@
+services:
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  App\Tests\Doubles\:
+    resource: '../tests/Doubles'
+
+  App\WeatherProvider\WeatherProvider:
+    arguments:
+      - "@App\\LocationProvider\\LocationProvider"
+      - "@App\\Tests\\Doubles\\WeatherProvider\\Weatherbit"
+      - "@App\\WeatherProvider\\OpenWeatherMap"
+      - "@logger"
+    public: true
