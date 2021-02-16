@@ -2188,16 +2188,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.22.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f377a3dd1fde44d37b9831d68dc8dea3ffd28e13"
+                "reference": "5232de97ee3b75b0360528dae24e73db49566ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f377a3dd1fde44d37b9831d68dc8dea3ffd28e13",
-                "reference": "f377a3dd1fde44d37b9831d68dc8dea3ffd28e13",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/5232de97ee3b75b0360528dae24e73db49566ab1",
+                "reference": "5232de97ee3b75b0360528dae24e73db49566ab1",
                 "shasum": ""
             },
             "require": {
@@ -2261,11 +2261,11 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-07T16:49:33+00:00"
+            "time": "2021-01-22T09:19:47+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
-            "version": "v1.22.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
@@ -2341,7 +2341,7 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.22.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
@@ -3231,16 +3231,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.28.0",
+            "version": "v1.29.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "6f4d27a68c92179c124f5331a27e32d197c9bd59"
+                "reference": "313b5669a5370bf36cd34fa8f5b5bbbfa5fb8aa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/6f4d27a68c92179c124f5331a27e32d197c9bd59",
-                "reference": "6f4d27a68c92179c124f5331a27e32d197c9bd59",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/313b5669a5370bf36cd34fa8f5b5bbbfa5fb8aa8",
+                "reference": "313b5669a5370bf36cd34fa8f5b5bbbfa5fb8aa8",
                 "shasum": ""
             },
             "require": {
@@ -3311,20 +3311,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-15T18:19:20+00:00"
+            "time": "2021-02-10T19:21:31+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.2.1",
+            "version": "v5.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "235823f6d215c9bd930a47a496e62c1354cde55b"
+                "reference": "587f2b6bbcda8c473b91c18165958ffbb8af3c4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/235823f6d215c9bd930a47a496e62c1354cde55b",
-                "reference": "235823f6d215c9bd930a47a496e62c1354cde55b",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/587f2b6bbcda8c473b91c18165958ffbb8af3c4c",
+                "reference": "587f2b6bbcda8c473b91c18165958ffbb8af3c4c",
                 "shasum": ""
             },
             "require": {
@@ -3375,7 +3375,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony PHPUnit Bridge",
+            "description": "Provides utilities for PHPUnit, especially user deprecation notices management",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -3391,7 +3391,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-14T22:27:17+00:00"
+            "time": "2021-01-25T13:54:05+00:00"
         }
     ],
     "aliases": [],
