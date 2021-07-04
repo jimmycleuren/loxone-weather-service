@@ -17,7 +17,9 @@ class OpenWeatherMap implements WeatherProviderInterface {
 
     public function getCurrentWeather($lat, $lon)
     {
+        $response = $this->client->request("GET", "https://api.openweathermap.org/data/2.5/weather?appid=$this->key&lat=$lat&lon=$lon&units=metric");
 
+        return json_decode($response->getContent());
     }
 
     public function getForecast($lat, $lon)
@@ -29,6 +31,7 @@ class OpenWeatherMap implements WeatherProviderInterface {
 
     public function getNormalizedData($lat, $lon, $asl)
     {
+        $current = $this->getCurrentWeather($lat, $lon);
         $forecast = $this->getForecast($lat, $lon);
 
         $normalizedforecast = [];
@@ -36,15 +39,15 @@ class OpenWeatherMap implements WeatherProviderInterface {
         foreach (array_merge([$forecast->current], $forecast->hourly, $forecast->daily) as $row) {
             $normalizedforecast[] = [
                 'timestamp' => $row->dt,
-                'temperature' => $row->temp,
-                'apparent_temperature' => $row->feels_like,
+                'temperature' => $row->temp->day ?? $row->temp,
+                'apparent_temperature' => $row->feels_like->day ?? $row->feels_like,
                 'wind_direction' => $row->wind_deg,
                 'wind_speed' => $row->wind_speed,
                 'wind_gust_speed' => $row->wind_gust ?? $row->wind_speed,
                 'clouds_low' => $row->clouds_low ?? $row->clouds,
                 'clouds_mid' => $row->clouds_mid ?? $row->clouds,
                 'clouds_high' => $row->clouds_hi ?? $row->clouds,
-                'precipation_intensity' => $row->rain ?? 0,
+                'precipation_intensity' => $row->rain->{'1h'} ?? $row->rain ?? 0,
                 'precipation_probability' => $row->pop ?? 0,
                 'snow' => $row->snow ?? 0,
                 'pressure' => $row->pressure,
@@ -57,10 +60,12 @@ class OpenWeatherMap implements WeatherProviderInterface {
         return [
             'normalized' => [
                 //'city' => $forecast->data[0]->city_name,
+                'city' => $current->name,
                 'lat' => $forecast->lat,
                 'lon' => $forecast->lon,
                 'asl' => $asl,
                 //'country' => $current->data[0]->country_code,
+                'country' => $current->sys->country,
                 'timezone' => $forecast->timezone,
                 'timezonediff' => $forecast->timezone_offset / 3600,
                 'sunrise' => $forecast->current->sunrise,
