@@ -3,38 +3,39 @@
 namespace App\LocationProvider;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class LocationProvider
 {
     private $logger;
-    private $dataFile = "/tmp/locations.json";
 
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
+        $client = RedisAdapter::createConnection($_ENV['REDIS_URL']);
+        $this->cache = new RedisAdapter($client);
     }
 
     public function getUsers()
     {
-        if (file_exists($this->dataFile)) {
+        $item = $this->cache->getItem('users');
 
-            $data = json_decode(file_get_contents($this->dataFile), true);
-
-            return array_keys($data);
+        if (!$item->isHit()) {
+            return [];
         }
 
-        return [];
+        return array_keys($item->get());
     }
 
     public function getCoordinates($user)
     {
-        if (file_exists($this->dataFile)) {
-            $this->logger->info("Reading location file");
+        $item = $this->cache->getItem('users');
 
-            $data = json_decode(file_get_contents($this->dataFile));
+        if ($item->isHit()) {
+            $data = $item->get();
 
-            if (isset($data->$user)) {
-                return [$data->$user->lat, $data->$user->lon, $data->$user->asl];
+            if (isset($data[$user])) {
+                return [$data[$user]['lat'], $data[$user]['lon'], $data[$user]['asl']];
             }
         }
 
@@ -44,13 +45,19 @@ class LocationProvider
     public function setCoordinates($user, $lat, $lon, $asl)
     {
         $this->logger->info("Saving location for $user: lat=$lat, lon=$lon, asl=$asl");
-        if (file_exists($this->dataFile)) {
-            $data = json_decode(file_get_contents($this->dataFile), true);
+
+        $item = $this->cache->getItem('users');
+
+        if ($item->isHit()) {
+            $data = $item->get();
         } else {
             $data = [];
         }
+
         $data[$user] = ['lat' => $lat, 'lon' => $lon, 'asl' => $asl];
 
-        file_put_contents($this->dataFile, json_encode($data));
+        $item->set($data);
+
+        $this->cache->save($item);
     }
 }

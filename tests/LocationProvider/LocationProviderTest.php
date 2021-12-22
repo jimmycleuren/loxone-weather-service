@@ -5,12 +5,15 @@ namespace App\Tests\LocationProvider;
 use App\LocationProvider\LocationProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class LocationProviderTest extends TestCase
 {
     public function testLocation()
     {
-        @unlink("/tmp/locations.json");
+        $client = RedisAdapter::createConnection($_ENV['REDIS_URL']);
+        $this->cache = new RedisAdapter($client);
+        $this->cache->clear();
 
         $locationProvider = new LocationProvider(new NullLogger());
 
