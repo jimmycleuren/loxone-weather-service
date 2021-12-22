@@ -9,6 +9,7 @@ on:
 env:
   XDEBUG_MODE: coverage
   SYMFONY_DEPRECATIONS_HELPER: max[direct]=0
+  REDIS_URL: redis://localhost:6379
 
 jobs:
   symfony:
@@ -18,6 +19,8 @@ jobs:
     services:
       redis:
         image: redis
+        ports:
+          - 6379:6379
 
     strategy:
       fail-fast: true
