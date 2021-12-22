@@ -9,7 +9,6 @@ on:
 env:
   XDEBUG_MODE: coverage
   SYMFONY_DEPRECATIONS_HELPER: max[direct]=0
-  REDIS_URL: redis://localhost:6379
 
 jobs:
   symfony:
@@ -78,6 +77,7 @@ jobs:
       - name: Run phpunit
         env:
           WEATHERBIT_KEY: ${{ secrets.WEATHERBIT_KEY }}
+          REDIS_URL: "redis://localhost:6379"
         run: ./vendor/bin/simple-phpunit --coverage-clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
