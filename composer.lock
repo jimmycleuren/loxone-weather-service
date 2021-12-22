@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8ab9b9377523471a06743166fdcc18f",
+    "content-hash": "4172bb29b697c3b390681b35eceb10a6",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1018,24 +1018,25 @@
         },
         {
             "name": "symfony/dotenv",
-            "version": "v5.3.6",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dotenv.git",
-                "reference": "b6d44663cff8c9880ee64d232870293a11e14cd6"
+                "reference": "9bd173ff68fa90d39c59d91a42ae42b7f11713a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dotenv/zipball/b6d44663cff8c9880ee64d232870293a11e14cd6",
-                "reference": "b6d44663cff8c9880ee64d232870293a11e14cd6",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/9bd173ff68fa90d39c59d91a42ae42b7f11713a0",
+                "reference": "9bd173ff68fa90d39c59d91a42ae42b7f11713a0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "symfony/deprecation-contracts": "^2.1"
+                "symfony/deprecation-contracts": "^2.1|^3"
             },
             "require-dev": {
-                "symfony/process": "^4.4|^5.0"
+                "symfony/console": "^4.4|^5.0|^6.0",
+                "symfony/process": "^4.4|^5.0|^6.0"
             },
             "type": "library",
             "autoload": {
@@ -1067,6 +1068,9 @@
                 "env",
                 "environment"
             ],
+            "support": {
+                "source": "https://github.com/symfony/dotenv/tree/v5.4.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -1081,7 +1085,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-29T06:20:01+00:00"
+            "time": "2021-11-23T10:19:22+00:00"
         },
         {
             "name": "symfony/error-handler",
