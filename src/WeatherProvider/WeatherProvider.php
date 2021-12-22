@@ -4,6 +4,7 @@ namespace App\WeatherProvider;
 
 use App\LocationProvider\LocationProvider;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class WeatherProvider {
 
@@ -11,6 +12,7 @@ class WeatherProvider {
     private $weatherbit;
     private $openweathermap;
     private $logger;
+    private $cache;
 
     public function __construct(LocationProvider $locationProvider, Weatherbit $weatherbit, OpenWeatherMap $openWeatherMap, LoggerInterface $logger)
     {
@@ -18,6 +20,8 @@ class WeatherProvider {
         $this->weatherbit = $weatherbit;
         $this->openweathermap = $openWeatherMap;
         $this->logger = $logger;
+        $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
+        $this->cache = new RedisAdapter($client);
     }
 
     public function updateCache()
@@ -38,59 +42,63 @@ class WeatherProvider {
             }
         }
 
-        file_put_contents("/tmp/weather.json", json_encode($data, JSON_PRETTY_PRINT));
+        $item = $this->cache->getItem('weather');
+        $item->set($data);
+        $this->cache->save($item);
     }
 
     public function getCSV($user)
     {
-        if (!file_exists("/tmp/weather.json")) {
+        $item = $this->cache->getItem('weather');
+
+        if (!$item->isHit()) {
             return null;
         }
 
-        $data = json_decode(file_get_contents('/tmp/weather.json'));
+        $data = $item->get();
 
-        if (!isset($data->$user)) {
+        if (!isset($data[$user])) {
             return null;
         }
 
-        $data = $data->$user->normalized;
+        $data = $data[$user]['normalized'];
 
         $header = [
             '',
-            $data->city,
-            $data->lon,
-            $data->lat,
-            $data->asl,
-            $data->country,
-            $data->timezone,
-            'UTC'.($data->timezonediff > 0 ? '+' : '').$data->timezonediff,
-            $data->sunrise,
-            $data->sunset,
+            $data['city'],
+            $data['lon'],
+            $data['lat'],
+            $data['asl'],
+            $data['country'],
+            $data['timezone'],
+            'UTC'.($data['timezonediff'] > 0 ? '+' : '').$data['timezonediff'],
+            $data['sunrise'],
+            $data['sunset'],
             ''
         ];
 
         $forecasts = [];
-        foreach ($data->forecasts as $forecast) {
+        foreach ($data['forecasts'] as $forecast) {
             $forecasts[] = implode(";", [
-                date("d.m.Y", $forecast->timestamp),
-                date("l", $forecast->timestamp),
-                date("H", $forecast->timestamp),
-                sprintf("%5.1f", $forecast->temperature),
-                sprintf("%5.1f", $forecast->apparent_temperature),
-                sprintf("%3.0f", $forecast->wind_speed),
-                sprintf("%3.0f", $forecast->wind_direction),
-                sprintf("%3.0f", $forecast->wind_gust_speed),
-                sprintf("%3.0f", $forecast->clouds_low),
-                sprintf("%3.0f", $forecast->clouds_mid),
-                sprintf("%3.0f", $forecast->clouds_high),
-                sprintf("%5.1f", $forecast->precipation_intensity),
-                sprintf("%3.0f", $forecast->precipation_probability),
-                sprintf("%3.1f", $forecast->snow),
-                sprintf("%4.0f", $forecast->pressure),
-                sprintf("%3.0f", $forecast->humidity),
+                date("d.m.Y", $forecast['timestamp']),
+                date("l", $forecast['timestamp']),
+                date("H", $forecast['timestamp']),
+                sprintf("%5.1f", $forecast['temperature']),
+                sprintf("%5.1f", $forecast['apparent_temperature']),
+                sprintf("%3.0f", $forecast['wind_speed']),
+                sprintf("%3.0f", $forecast['wind_direction']),
+                sprintf("%3.0f", $forecast['wind_gust_speed']),
+                sprintf("%3.0f", $forecast['clouds_low']),
+                sprintf("%3.0f", $forecast['clouds_mid']),
+                sprintf("%3.0f", $forecast['clouds_high']),
+                sprintf("%5.1f", $forecast['precipation_intensity']),
+                sprintf("%3.0f", $forecast['precipation_probability']),
+                sprintf("%3.1f", $forecast['snow']),
+                sprintf("%4.0f", $forecast['pressure']),
+                sprintf("%3.0f", $forecast['humidity']),
                 sprintf("%6.0f", 0.0), //cape
-                sprintf("%d", $this->getIcon($forecast->icon)), //icon
-                sprintf("%4.0f", $forecast->solar_radiation),
+                sprintf("%d", $this->getIcon($forecast['icon'])), //icon
+                sprintf("%4.0f", $forecast['solar_radiation']),
             ]);
         }
 

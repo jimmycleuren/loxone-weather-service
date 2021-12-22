@@ -10,8 +10,13 @@ services:
       - ./:/app
       - ./docker/symfony.conf:/etc/nginx/conf.d/symfony.conf:ro
 
+  redis:
+    image: redis
+
   php:
     build: ""
+    depends_on:
+      - redis
     volumes:
       - ./:/app
     working_dir: /app
