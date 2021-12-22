@@ -16,11 +16,11 @@ COPY docker/update-weather /etc/cron.d/update-weather
 RUN chmod 0644 /etc/cron.d/update-weather
 RUN crontab /etc/cron.d/update-weather
 
-#RUN mkdir /app/var
-#RUN mkdir /app/var/cache
-#RUN mkdir /app/var/cache/prod
-#RUN mkdir /app/var/log
-#RUN mkdir /app/var/log/prod
+RUN mkdir /app/var
+RUN mkdir /app/var/cache
+RUN mkdir /app/var/cache/prod
+RUN mkdir /app/var/log
+RUN mkdir /app/var/log/prod
 RUN chmod 777 -R /app/var
 
 RUN setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwX var
