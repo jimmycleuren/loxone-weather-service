@@ -20,7 +20,7 @@ class WeatherProvider {
         $this->weatherbit = $weatherbit;
         $this->openweathermap = $openWeatherMap;
         $this->logger = $logger;
-        $client = RedisAdapter::createConnection($_ENV['REDIS_URL']);
+        $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
         $this->cache = new RedisAdapter($client);
     }
 
