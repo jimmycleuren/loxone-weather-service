@@ -14,7 +14,7 @@ class WeatherProviderTest extends TestCase
 {
     public function testGetCsv()
     {
-        $client = RedisAdapter::createConnection($_ENV['REDIS_URL']);
+        $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
         $this->cache = new RedisAdapter($client);
         $this->cache->clear();
 

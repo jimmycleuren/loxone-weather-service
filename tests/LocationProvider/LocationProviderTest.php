@@ -11,7 +11,7 @@ class LocationProviderTest extends TestCase
 {
     public function testLocation()
     {
-        $client = RedisAdapter::createConnection($_ENV['REDIS_URL']);
+        $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
         $this->cache = new RedisAdapter($client);
         $this->cache->clear();
 
