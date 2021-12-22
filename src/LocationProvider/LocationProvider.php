@@ -8,6 +8,7 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 class LocationProvider
 {
     private $logger;
+    private $cache;
 
     public function __construct(LoggerInterface $logger)
     {
