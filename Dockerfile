@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.0.2-fpm
 
 ADD . /app
 
@@ -16,11 +16,8 @@ COPY docker/update-weather /etc/cron.d/update-weather
 RUN chmod 0644 /etc/cron.d/update-weather
 RUN crontab /etc/cron.d/update-weather
 
-RUN mkdir /app/var
-RUN mkdir /app/var/cache
-RUN mkdir /app/var/cache/prod
-RUN mkdir /app/var/log
-RUN mkdir /app/var/log/prod
+RUN mkdir -p /app/var/cache/prod
+RUN mkdir -p /app/var/log/prod
 RUN chmod 777 -R /app/var
 
 RUN setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwX var
