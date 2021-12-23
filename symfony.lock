@@ -310,6 +310,9 @@
             "config/routes.yaml"
         ]
     },
+    "symfony/runtime": {
+        "version": "v6.0.0"
+    },
     "symfony/service-contracts": {
         "version": "v2.2.0"
     },
