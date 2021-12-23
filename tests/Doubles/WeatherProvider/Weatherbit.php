@@ -7,7 +7,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Weatherbit extends \App\WeatherProvider\Weatherbit
 {
-    public function __construct(string $key = "", HttpClientInterface $client)
+    public function __construct(string $key, HttpClientInterface $client)
     {
 
     }

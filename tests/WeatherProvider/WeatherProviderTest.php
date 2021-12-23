@@ -9,9 +9,12 @@ use App\WeatherProvider\WeatherProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class WeatherProviderTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testGetCsv()
     {
         $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);

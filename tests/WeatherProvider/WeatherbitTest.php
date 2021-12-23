@@ -7,9 +7,12 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class WeatherbitTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testUpdate()
     {
         $client = $this->prophesize(MockHttpClient::class);
