@@ -6,6 +6,9 @@ services:
   App\Tests\Doubles\:
     resource: '../tests/Doubles'
 
+  App\Tests\Doubles\WeatherProvider\Weatherbit:
+      arguments: ['%env(WEATHERBIT_KEY)%']
+
   App\WeatherProvider\WeatherProvider:
     arguments:
       - "@App\\LocationProvider\\LocationProvider"
