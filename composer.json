@@ -25,7 +25,7 @@
         "phpstan/phpstan": "^0.12.58",
         "symfony/browser-kit": "5.4.*",
         "symfony/maker-bundle": "^1.24",
-        "symfony/phpunit-bridge": "^5.1"
+        "symfony/phpunit-bridge": "^6.1"
     },
     "config": {
         "optimize-autoloader": true,
