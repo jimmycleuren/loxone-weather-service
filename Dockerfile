@@ -1,4 +1,4 @@
-FROM php:8.0.2-fpm
+FROM php:8.2.0-fpm
 
 ADD . /app
 
