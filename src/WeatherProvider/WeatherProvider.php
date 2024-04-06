@@ -43,6 +43,7 @@ class WeatherProvider {
         }
 
         $item = $this->cache->getItem('weather');
+        $item->expiresAfter(3600 * 24);
         $item->set($data);
         $this->cache->save($item);
     }
