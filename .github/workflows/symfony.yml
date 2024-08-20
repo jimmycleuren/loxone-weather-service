@@ -36,7 +36,7 @@ jobs:
           tools: pecl
 
       - name: Install symfony
-        run: export PATH="$HOME/.symfony/bin:$PATH" ; if symfony self:version; then symfony self:update --yes ; else wget https://get.symfony.com/cli/installer -O - | bash ; fi
+        run: export PATH="$HOME/.symfony5/bin:$PATH" ; if symfony self:version; then symfony self:update --yes ; else wget https://get.symfony.com/cli/installer -O - | bash ; fi
 
       - uses: actions/checkout@v2
 
@@ -69,7 +69,7 @@ jobs:
         run: ./bin/console lint:container
 
       - name: Check security
-        run: export PATH="$HOME/.symfony/bin:$PATH" ; symfony check:security
+        run: export PATH="$HOME/.symfony5/bin:$PATH" ; symfony check:security
 
       - name: Validate composer.json and composer.lock
         run: composer validate
