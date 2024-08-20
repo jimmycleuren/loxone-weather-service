@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "doctrine/annotations": "^1.11",
-        "predis/predis": "^1.1",
+        "predis/predis": "^2.2",
         "symfony/cache": "6.0.*",
         "symfony/console": "6.0.*",
         "symfony/dotenv": "6.0.*",
