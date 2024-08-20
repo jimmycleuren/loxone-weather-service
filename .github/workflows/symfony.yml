@@ -78,7 +78,7 @@ jobs:
         env:
           WEATHERBIT_KEY: ${{ secrets.WEATHERBIT_KEY }}
           REDIS_URL: "redis://localhost:6379"
-        run: ./vendor/bin/simple-phpunit --coverage-clover build/logs/clover.xml
+        run: SYMFONY_PHPUNIT_REQUIRE="nikic/php-parser:^4.13" ./vendor/bin/simple-phpunit --coverage-clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
         if: ${{ matrix.php-versions == '7.4' }}
