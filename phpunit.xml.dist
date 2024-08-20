@@ -11,7 +11,7 @@
     <server name="APP_ENV" value="test" force="true"/>
     <server name="SHELL_VERBOSITY" value="-1"/>
     <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
-    <server name="SYMFONY_PHPUNIT_REQUIRE" value="nikic/php-parser:^4.13,<4.18"/>
+    <server name="SYMFONY_PHPUNIT_REQUIRE" value="nikic/php-parser:^4.13,\<4.18"/>
   </php>
   <testsuites>
     <testsuite name="Project Test Suite">
