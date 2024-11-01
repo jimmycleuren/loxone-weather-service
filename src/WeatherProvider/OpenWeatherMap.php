@@ -24,7 +24,7 @@ class OpenWeatherMap implements WeatherProviderInterface {
 
     public function getForecast($lat, $lon)
     {
-        $response = $this->client->request("GET", "https://api.openweathermap.org/data/2.5/onecall?appid=$this->key&lat=$lat&lon=$lon&units=metric");
+        $response = $this->client->request("GET", "https://api.openweathermap.org/data/3.0/onecall?appid=$this->key&lat=$lat&lon=$lon&units=metric");
 
         return json_decode($response->getContent());
     }
