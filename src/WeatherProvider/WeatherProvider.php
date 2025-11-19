@@ -94,7 +94,7 @@ class WeatherProvider {
                 sprintf("%3.0f", $forecast['clouds_high']),
                 sprintf("%5.1f", $forecast['precipation_intensity']),
                 sprintf("%3.0f", $forecast['precipation_probability']),
-                sprintf("%3.1f", $forecast['snow']),
+                sprintf("%3.1f", isset($forecast['snow']->{'1h'}) ? $forecast['snow']->{'1h'} : $forecast['snow']),
                 sprintf("%4.0f", $forecast['pressure']),
                 sprintf("%3.0f", $forecast['humidity']),
                 sprintf("%6.0f", 0.0), //cape
