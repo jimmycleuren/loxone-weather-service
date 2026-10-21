@@ -15,11 +15,20 @@ class ForecastControllerTest extends WebTestCase
         $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
 
-    public function testUnknownFormat()
+    public function testFormat2ReturnsSameAsFormat1()
     {
         $client = static::createClient();
 
         $client->request('GET', '/forecast/?coord=5.0000,50.0000&asl=100&format=2');
+
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
+    }
+
+    public function testUnknownFormat()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/forecast/?coord=5.0000,50.0000&asl=100&format=3');
 
         $this->assertSame(404, $client->getResponse()->getStatusCode());
     }

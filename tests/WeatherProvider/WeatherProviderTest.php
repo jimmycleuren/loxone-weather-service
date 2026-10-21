@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\LocationProvider;
+namespace App\Tests\WeatherProvider;
 
 use App\LocationProvider\LocationProvider;
 use App\WeatherProvider\OpenWeatherMap;
@@ -14,6 +14,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
 class WeatherProviderTest extends TestCase
 {
     use ProphecyTrait;
+
+    private RedisAdapter $cache;
 
     public function testGetCsv()
     {

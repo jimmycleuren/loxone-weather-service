@@ -9,6 +9,8 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class LocationProviderTest extends TestCase
 {
+    private RedisAdapter $cache;
+
     public function testLocation()
     {
         $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
