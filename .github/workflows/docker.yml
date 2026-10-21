@@ -52,6 +52,21 @@ jobs:
           docker run --rm lws:verify php -r 'exit(version_compare(PHP_VERSION, "8.3.36", "<") ? 1 : 0);'
           docker run --rm lws:verify php -r 'exit(ini_get("session.upload_progress.enabled") ? 1 : 0);'
 
+      - name: Verify the periodic refresh sees the container environment
+        # REDIS_URL is only passed as a container env var (the image's .env leaves it empty),
+        # so this fails with "Invalid Redis DSN" if the refresh job does not inherit the env.
+        run: |
+          docker network create lws
+          docker run -d --rm --name redis --network lws redis:7-alpine
+          docker run -d --name app --network lws -e REDIS_URL=redis://redis lws:verify
+          for i in $(seq 1 30); do
+            docker logs app 2>&1 | grep -q 'Weather successfully retrieved' && break
+            sleep 1
+          done
+          docker logs app 2>&1 | tail -20
+          docker logs app 2>&1 | grep -q 'Weather successfully retrieved'
+          docker rm -f app redis
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
