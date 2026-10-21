@@ -69,8 +69,6 @@ jobs:
         run: ./bin/console lint:container
 
       - name: Security audit
-        # Non-blocking until the Symfony 6.0 -> 6.4 LTS upgrade lands (6.0 is EOL and has open advisories).
-        continue-on-error: true
         run: composer audit --locked
 
       - name: Run phpunit
