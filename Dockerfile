@@ -3,7 +3,7 @@ FROM php:8.3.36-fpm-bookworm
 ADD . /app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends zip unzip git procps supervisor cron acl \
+    && apt-get install -y --no-install-recommends zip unzip git procps supervisor acl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -14,10 +14,6 @@ RUN chmod 755 /usr/local/etc/php/conf.d/timezone.ini
 COPY docker/php2shell.ini /usr/local/etc/php/conf.d/zz-php2shell.ini
 
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-COPY docker/update-weather /etc/cron.d/update-weather
-RUN chmod 0644 /etc/cron.d/update-weather
-RUN crontab /etc/cron.d/update-weather
 
 RUN mkdir -p /app/var/cache/prod
 RUN mkdir -p /app/var/log/prod
