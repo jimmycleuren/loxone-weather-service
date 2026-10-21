@@ -52,20 +52,31 @@ jobs:
           docker run --rm lws:verify php -r 'exit(version_compare(PHP_VERSION, "8.3.36", "<") ? 1 : 0);'
           docker run --rm lws:verify php -r 'exit(ini_get("session.upload_progress.enabled") ? 1 : 0);'
 
-      - name: Verify the periodic refresh sees the container environment
-        # REDIS_URL is only passed as a container env var (the image's .env leaves it empty),
-        # so this fails with "Invalid Redis DSN" if the refresh job does not inherit the env.
+      - name: Verify the image end-to-end (refresh job + web requests via nginx)
+        # Runs the image the way examples/compose does. REDIS_URL is only passed as a container
+        # env var (the image's .env leaves it empty), so the refresh fails with "Invalid Redis DSN"
+        # if the job does not inherit the env. The web requests run AFTER the refresh job has
+        # written var/ (log, cache), which catches var/ files the php-fpm user cannot write.
         run: |
           docker network create lws
           docker run -d --rm --name redis --network lws redis:7-alpine
-          docker run -d --name app --network lws -e REDIS_URL=redis://redis lws:verify
+          docker run -d --name php --network lws -e REDIS_URL=redis://redis lws:verify
           for i in $(seq 1 30); do
-            docker logs app 2>&1 | grep -q 'Weather successfully retrieved' && break
+            docker logs php 2>&1 | grep -q 'Weather successfully retrieved' && break
             sleep 1
           done
-          docker logs app 2>&1 | tail -20
-          docker logs app 2>&1 | grep -q 'Weather successfully retrieved'
-          docker rm -f app redis
+          docker logs php 2>&1 | tail -20
+          docker logs php 2>&1 | grep -q 'Weather successfully retrieved'
+          docker run -d --rm --name nginx --network lws -p 8080:80 \
+            -v "$PWD/examples/compose/symfony.conf:/etc/nginx/conf.d/symfony.conf:ro" nginx:latest
+          sleep 2
+          body=$(curl -s -H 'Host: weather.loxone.com' http://127.0.0.1:8080/health)
+          echo "health body: $body"
+          test "$body" = "healty"
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: weather.loxone.com' 'http://127.0.0.1:8080/forecast/?coord=5.0000,50.0000&asl=100&format=1')
+          echo "forecast status: $code"
+          test "$code" = "200"
+          docker rm -f php redis nginx
 
       - name: Build and push
         uses: docker/build-push-action@v6
