@@ -78,7 +78,9 @@ jobs:
           REDIS_URL: "redis://localhost:6379"
         run: |
           if [ "${{ matrix.php-versions }}" = "8.3" ]; then
-            php bin/phpunit --coverage-text --colors=never
+            # Project PHPUnit, not simple-phpunit: simple-phpunit ships its own nikic/php-parser,
+            # which clashes with the project's copy once php-code-coverage loads it.
+            vendor/bin/phpunit --coverage-text --colors=never
           else
             php bin/phpunit
           fi
