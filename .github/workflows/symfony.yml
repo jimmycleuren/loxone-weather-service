@@ -38,7 +38,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
-          coverage: none
+          coverage: ${{ matrix.php-versions == '8.3' && 'pcov' || 'none' }}
           tools: composer:v2
 
       - name: Get composer cache directory
@@ -76,4 +76,11 @@ jobs:
       - name: Run phpunit
         env:
           REDIS_URL: "redis://localhost:6379"
-        run: php bin/phpunit
+        run: |
+          if [ "${{ matrix.php-versions }}" = "8.3" ]; then
+            # Project PHPUnit, not simple-phpunit: simple-phpunit ships its own nikic/php-parser,
+            # which clashes with the project's copy once php-code-coverage loads it.
+            vendor/bin/phpunit --coverage-text --colors=never
+          else
+            php bin/phpunit
+          fi
