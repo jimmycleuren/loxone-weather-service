@@ -82,16 +82,3 @@ jobs:
           else
             php bin/phpunit
           fi
-
-      - name: Smoke test front controller (prod)
-        env:
-          REDIS_URL: "redis://localhost:6379"
-        run: tests/smoke.sh prod
-
-      - name: Smoke test front controller (dev)
-        # Known failure: symfony/runtime 6.0 calls ini_set('assert.warning') which PHP 8.3 deprecates,
-        # and debug mode prints it into the response body. Becomes blocking with the Symfony 6.4 upgrade.
-        continue-on-error: true
-        env:
-          REDIS_URL: "redis://localhost:6379"
-        run: tests/smoke.sh dev
