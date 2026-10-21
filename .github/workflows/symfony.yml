@@ -38,7 +38,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
-          coverage: none
+          coverage: ${{ matrix.php-versions == '8.3' && 'pcov' || 'none' }}
           tools: composer:v2
 
       - name: Get composer cache directory
@@ -76,4 +76,22 @@ jobs:
       - name: Run phpunit
         env:
           REDIS_URL: "redis://localhost:6379"
-        run: php bin/phpunit
+        run: |
+          if [ "${{ matrix.php-versions }}" = "8.3" ]; then
+            php bin/phpunit --coverage-text --colors=never
+          else
+            php bin/phpunit
+          fi
+
+      - name: Smoke test front controller (prod)
+        env:
+          REDIS_URL: "redis://localhost:6379"
+        run: tests/smoke.sh prod
+
+      - name: Smoke test front controller (dev)
+        # Known failure: symfony/runtime 6.0 calls ini_set('assert.warning') which PHP 8.3 deprecates,
+        # and debug mode prints it into the response body. Becomes blocking with the Symfony 6.4 upgrade.
+        continue-on-error: true
+        env:
+          REDIS_URL: "redis://localhost:6379"
+        run: tests/smoke.sh dev

@@ -1,0 +1,11 @@
+{
+ "coord": {
+  "lon": 5,
+  "lat": 50
+ },
+ "name": "Gedinne",
+ "sys": {
+  "country": "BE"
+ },
+ "timezone": 7200
+}
