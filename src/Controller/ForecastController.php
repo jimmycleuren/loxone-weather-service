@@ -7,13 +7,11 @@ use App\WeatherProvider\WeatherProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ForecastController extends AbstractController
 {
-    /**
-     * @Route("/forecast/", name="forecast")
-     */
+    #[Route('/forecast/', name: 'forecast')]
     public function index(LocationProvider $locationProvider, WeatherProvider $weatherProvider, Request $request): Response
     {
         list($lon, $lat) = explode(",", $request->get('coord'));

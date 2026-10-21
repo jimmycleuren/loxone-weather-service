@@ -4,26 +4,26 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "doctrine/annotations": "^1.11",
         "predis/predis": "^2.2",
-        "symfony/cache": "6.0.*",
-        "symfony/console": "6.0.*",
-        "symfony/dotenv": "6.0.*",
+        "symfony/cache": "6.4.*",
+        "symfony/console": "6.4.*",
+        "symfony/dotenv": "6.4.*",
         "symfony/flex": "^2.2.5",
-        "symfony/framework-bundle": "6.0.*",
-        "symfony/http-client": "6.0.*",
+        "symfony/framework-bundle": "6.4.*",
+        "symfony/http-client": "6.4.*",
         "symfony/monolog-bundle": "^3.6",
-        "symfony/runtime": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/runtime": "6.4.*",
+        "symfony/yaml": "6.4.*"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^1.11.11",
-        "symfony/browser-kit": "5.4.*",
+        "phpunit/phpunit": "^9.6.33",
+        "symfony/browser-kit": "6.4.*",
         "symfony/maker-bundle": "^1.24",
         "symfony/phpunit-bridge": "^7.1"
     },
@@ -36,6 +36,9 @@
         "allow-plugins": {
             "symfony/flex": true,
             "symfony/runtime": true
+        },
+        "platform": {
+            "php": "8.1.0"
         }
     },
     "autoload": {
@@ -76,7 +79,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.0.*"
+            "require": "6.4.*"
         }
     }
 }

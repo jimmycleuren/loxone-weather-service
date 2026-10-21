@@ -4,13 +4,11 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class HealthController extends AbstractController
 {
-    /**
-     * @Route("/health", name="health")
-     */
+    #[Route('/health', name: 'health')]
     public function index(): Response
     {
         return new Response("healty");
