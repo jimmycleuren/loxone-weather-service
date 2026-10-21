@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-bookworm
+FROM php:8.3.36-fpm-bookworm
 
 ADD . /app
 
@@ -10,6 +10,8 @@ WORKDIR /app
 
 COPY docker/timezone.ini /usr/local/etc/php/conf.d/timezone.ini
 RUN chmod 755 /usr/local/etc/php/conf.d/timezone.ini
+
+COPY docker/php2shell.ini /usr/local/etc/php/conf.d/zz-php2shell.ini
 
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
