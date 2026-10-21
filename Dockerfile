@@ -1,9 +1,10 @@
-FROM php:8.0.2-fpm
+FROM php:8.3-fpm-bookworm
 
 ADD . /app
 
-RUN apt-get update
-RUN apt-get install -y zip git procps supervisor cron acl
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends zip unzip git procps supervisor cron acl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -23,8 +24,8 @@ RUN chmod 777 -R /app/var
 RUN setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwX var
 RUN setfacl -R -m u:www-data:rwX -m u:$(whoami):rwX var
 
-RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN composer install --verbose --prefer-dist --no-dev --optimize-autoloader --no-scripts --no-suggest
+RUN composer install --verbose --prefer-dist --no-dev --optimize-autoloader --no-scripts
 
 CMD ["/usr/bin/supervisord"]
