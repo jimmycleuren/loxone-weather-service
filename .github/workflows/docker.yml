@@ -46,7 +46,7 @@ jobs:
           platforms: linux/amd64
           cache-from: type=gha
 
-      - name: Verify PHP version (>= 8.5.12: PHP2Shell CVE-2026-109618/109619 fixed)
+      - name: "Verify PHP version (>= 8.5.12, PHP2Shell CVE-2026-109618/109619 fixed)"
         run: |
           docker run --rm lws:verify php -v
           docker run --rm lws:verify php -r 'exit(version_compare(PHP_VERSION, "8.5.12", "<") ? 1 : 0);'
