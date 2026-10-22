@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\WeatherProvider;
 
 use App\Forecast\Forecast;
 use App\Forecast\ForecastRow;
 use App\Forecast\WeatherIcon;
-use App\LocationProvider\LocationProvider;
+use App\Location\Location;
+use App\Location\LocationProvider;
 use App\Loxone\LoxoneCsvRenderer;
 use App\WeatherProvider\OpenWeatherMap;
 use App\WeatherProvider\Weatherbit;
@@ -101,7 +104,7 @@ class CsvOutputTest extends TestCase
     public function testOpenWeatherMapCsvMatchesGoldenFile(): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('golden', 50, 5, '100');
+        $locations->setLocation('golden', new Location('50', '5', '100'));
         $provider = $this->provider($locations, weatherbitKey: '');
         $provider->updateCache();
         $csv = $provider->getCSV('golden');
@@ -125,7 +128,7 @@ class CsvOutputTest extends TestCase
         ));
 
         $locations = $this->locations();
-        $locations->setCoordinates('golden', 50, 5, '100');
+        $locations->setLocation('golden', new Location('50', '5', '100'));
         $provider = $this->provider($locations, new Weatherbit('key', $client), owmKey: '');
         $provider->updateCache();
         $csv = $provider->getCSV('golden');
@@ -140,7 +143,7 @@ class CsvOutputTest extends TestCase
     public function testCsvStructure(): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('golden', 50, 5, '100');
+        $locations->setLocation('golden', new Location('50', '5', '100'));
         $provider = $this->provider($locations, weatherbitKey: '');
         $provider->updateCache();
         $csv = $provider->getCSV('golden');
@@ -166,14 +169,14 @@ class CsvOutputTest extends TestCase
     public function testUsersAreKeptApart(): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('north', 60, 6, 10);
-        $locations->setCoordinates('south', 40, 4, 20);
+        $locations->setLocation('north', new Location('60', '6', '10'));
+        $locations->setLocation('south', new Location('40', '4', '20'));
 
         $weatherbit = $this->createStub(Weatherbit::class);
-        $weatherbit->method('fetchForecast')->willReturnMap([
-            [60, 6, 10, $this->forecast([$this->row()], ['city' => 'North'])],
-            [40, 4, 20, $this->forecast([$this->row()], ['city' => 'South'])],
-        ]);
+        $weatherbit->method('fetchForecast')->willReturnCallback(fn (Location $l): Forecast => match ($l->latitude) {
+            '60' => $this->forecast([$this->row()], ['city' => 'North']),
+            '40' => $this->forecast([$this->row()], ['city' => 'South']),
+        });
 
         $provider = $this->provider($locations, $weatherbit);
         $provider->updateCache();
@@ -186,7 +189,7 @@ class CsvOutputTest extends TestCase
     public function testWeatherbitIsPreferredOverOpenWeatherMap(): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('u', 50, 5, 100);
+        $locations->setLocation('u', new Location('50', '5', '100'));
 
         $weatherbit = $this->createMock(Weatherbit::class);
         $weatherbit->expects($this->once())->method('fetchForecast')->willReturn($this->forecast([]));
@@ -199,7 +202,7 @@ class CsvOutputTest extends TestCase
     public function testNoProviderKeyStoresNoData(): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('u', 50, 5, 100);
+        $locations->setLocation('u', new Location('50', '5', '100'));
         $provider = $this->provider($locations, null, new OpenWeatherMap('key', new MockHttpClient()), '', '');
         $provider->updateCache();
 
@@ -210,7 +213,7 @@ class CsvOutputTest extends TestCase
     public function testUtcOffsetFormatting($diff, string $expected): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('u', 50, 5, 100);
+        $locations->setLocation('u', new Location('50', '5', '100'));
         $weatherbit = $this->createStub(Weatherbit::class);
         $weatherbit->method('fetchForecast')->willReturn($this->forecast([$this->row()], ['utcOffsetHours' => (float) $diff]));
         $provider = $this->provider($locations, $weatherbit);
@@ -228,7 +231,7 @@ class CsvOutputTest extends TestCase
     public function testSnowValue(float $snow, string $expected): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('u', 50, 5, 100);
+        $locations->setLocation('u', new Location('50', '5', '100'));
         $weatherbit = $this->createStub(Weatherbit::class);
         $weatherbit->method('fetchForecast')->willReturn($this->forecast([$this->row(['snow' => $snow])]));
         $provider = $this->provider($locations, $weatherbit);
@@ -250,7 +253,7 @@ class CsvOutputTest extends TestCase
     public function testPictoCodes(string $icon, string $expected): void
     {
         $locations = $this->locations();
-        $locations->setCoordinates('u', 50, 5, 100);
+        $locations->setLocation('u', new Location('50', '5', '100'));
         $weatherbit = $this->createStub(Weatherbit::class);
         $weatherbit->method('fetchForecast')->willReturn($this->forecast([$this->row(['icon' => WeatherIcon::from($icon)])]));
         $provider = $this->provider($locations, $weatherbit);

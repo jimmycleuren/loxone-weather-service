@@ -36,14 +36,14 @@ class UpdateWeatherCommand extends Command
         if (null === $every) {
             return $this->update($io);
         }
-        if (!ctype_digit((string) $every)) {
+        if (!\is_string($every) || !ctype_digit($every)) {
             $io->error('--every must be a number of seconds');
 
             return Command::INVALID;
         }
 
         $iterations = $input->getOption('iterations');
-        $remaining = null === $iterations ? null : (int) $iterations;
+        $remaining = \is_string($iterations) ? (int) $iterations : null;
         $status = Command::SUCCESS;
 
         while (null === $remaining || $remaining-- > 0) {

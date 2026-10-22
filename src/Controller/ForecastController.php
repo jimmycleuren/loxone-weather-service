@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\LocationProvider\LocationProvider;
+use App\Location\InvalidLocation;
+use App\Location\Location;
+use App\Location\LocationProvider;
 use App\WeatherProvider\WeatherProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,30 +15,41 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ForecastController extends AbstractController
 {
-    #[Route('/forecast/', name: 'forecast')]
+    private const int MAX_USER_LENGTH = 128;
+
+    #[Route('/forecast/', name: 'forecast', methods: ['GET'])]
     public function index(LocationProvider $locationProvider, WeatherProvider $weatherProvider, Request $request): Response
     {
-        [$lon, $lat] = explode(',', $request->get('coord'));
-        $asl = $request->get('asl');
-        $format = $request->get('format');
-        $user = (string) $request->query->get('user', '');
+        // Format 2 gets the same content as 1: its differences are unknown. Checked
+        // first, so an unsupported request does not store a location or call an API.
+        if (!\in_array($request->query->get('format'), ['1', '2'], true)) {
+            throw $this->createNotFoundException();
+        }
 
-        $locationProvider->setCoordinates($user, $lat, $lon, $asl);
+        $user = $request->query->getString('user');
+        if (\strlen($user) > self::MAX_USER_LENGTH) {
+            return $this->badRequest('user is too long');
+        }
+
+        try {
+            $location = Location::fromQuery($request->query->get('coord'), $request->query->get('asl'));
+        } catch (InvalidLocation $e) {
+            return $this->badRequest($e->getMessage());
+        }
+
+        $locationProvider->setLocation($user, $location);
 
         $weather = $weatherProvider->getCSV($user);
-        if (!$weather) {
+        if (null === $weather) {
             $weatherProvider->updateCache();
             $weather = $weatherProvider->getCSV($user);
         }
 
-        if ($format && 1 == $format) {
-            return new Response($weather);
-        }
+        return new Response($weather);
+    }
 
-        if ($format && 2 == $format) { // lets return the same content for format 2 as we don't know the changes
-            return new Response($weather);
-        }
-
-        throw $this->createNotFoundException();
+    private function badRequest(string $message): Response
+    {
+        return new Response($message."\n", Response::HTTP_BAD_REQUEST, ['Content-Type' => 'text/plain']);
     }
 }

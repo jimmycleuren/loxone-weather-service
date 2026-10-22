@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\WeatherProvider;
 
 use App\Forecast\Forecast;
 use App\Forecast\ForecastRow;
 use App\Forecast\WeatherCode;
+use App\Location\Location;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Weatherbit implements WeatherProviderInterface
@@ -13,24 +16,24 @@ class Weatherbit implements WeatherProviderInterface
     {
     }
 
-    public function getCurrentWeather($lat, $lon)
+    public function getCurrentWeather(string $lat, string $lon): mixed
     {
         $response = $this->client->request('GET', "https://api.weatherbit.io/v2.0/current?key=$this->key&lat=$lat&lon=$lon");
 
         return json_decode($response->getContent());
     }
 
-    public function getForecast($lat, $lon)
+    public function getForecast(string $lat, string $lon): mixed
     {
         $response = $this->client->request('GET', "https://api.weatherbit.io/v2.0/forecast/daily?key=$this->key&lat=$lat&lon=$lon");
 
         return json_decode($response->getContent())->data;
     }
 
-    public function fetchForecast(float|int|string $lat, float|int|string $lon, int|string $asl): Forecast
+    public function fetchForecast(Location $location): Forecast
     {
-        $current = $this->getCurrentWeather($lat, $lon);
-        $forecast = $this->getForecast($lat, $lon);
+        $current = $this->getCurrentWeather($location->latitude, $location->longitude);
+        $forecast = $this->getForecast($location->latitude, $location->longitude);
 
         $rows = [];
         $utcOffsetHours = 0;
@@ -56,22 +59,22 @@ class Weatherbit implements WeatherProviderInterface
                 icon: WeatherCode::toIcon(Json::int($row->weather->code)),
             );
             if (isset($row->timestamp_local) && isset($row->timestamp_utc)) {
-                $utcOffsetHours = (strtotime($row->timestamp_local) - strtotime($row->timestamp_utc)) / 3600;
+                $utcOffsetHours = (strtotime(Json::string($row->timestamp_local)) - strtotime(Json::string($row->timestamp_utc))) / 3600;
             }
         }
 
-        $location = $current->data[0];
+        $station = $current->data[0];
 
         return new Forecast(
-            city: Json::string($location->city_name),
-            lat: Json::float($location->lat),
-            lon: Json::float($location->lon),
-            asl: (string) $asl,
-            country: Json::string($location->country_code),
-            timezone: Json::string($location->timezone),
+            city: Json::string($station->city_name),
+            lat: Json::float($station->lat),
+            lon: Json::float($station->lon),
+            asl: $location->altitude,
+            country: Json::string($station->country_code),
+            timezone: Json::string($station->timezone),
             utcOffsetHours: $utcOffsetHours,
-            sunrise: Json::intOrString($location->sunrise),
-            sunset: Json::intOrString($location->sunset),
+            sunrise: Json::intOrString($station->sunrise),
+            sunset: Json::intOrString($station->sunset),
             rows: $rows,
         );
     }
