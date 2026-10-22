@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace App\WeatherProvider;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Forecast\Forecast;
 
 interface WeatherProviderInterface
 {
-    public function __construct(string $key, HttpClientInterface $client);
-
-    public function getCurrentWeather($lat, $lon);
-
-    public function getForecast($lat, $lon);
-
-    public function getNormalizedData($lat, $lon, $asl);
+    public function fetchForecast(float|int|string $lat, float|int|string $lon, int|string $asl): Forecast;
 }

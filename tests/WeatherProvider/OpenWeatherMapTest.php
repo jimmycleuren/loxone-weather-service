@@ -2,6 +2,7 @@
 
 namespace App\Tests\WeatherProvider;
 
+use App\Forecast\WeatherCode;
 use App\WeatherProvider\OpenWeatherMap;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +41,7 @@ class OpenWeatherMapTest extends TestCase
     {
         $requested = [];
         $owm = new OpenWeatherMap('secret', self::client($requested));
-        $owm->getNormalizedData(50, 5, 100);
+        $owm->fetchForecast(50, 5, 100);
 
         $this->assertCount(2, $requested);
         foreach ($requested as $url) {
@@ -53,62 +54,60 @@ class OpenWeatherMapTest extends TestCase
 
     public function testNormalizedMetadata(): void
     {
-        $data = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100);
-        $n = $data['normalized'];
+        $n = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100);
 
-        $this->assertSame('Gedinne', $n['city']);
-        $this->assertSame('BE', $n['country']);
-        $this->assertEquals(50, $n['lat']);
-        $this->assertEquals(5, $n['lon']);
-        $this->assertSame(100, $n['asl']);
-        $this->assertSame('Europe/Brussels', $n['timezone']);
-        $this->assertEquals(2, $n['timezonediff']);
-        $this->assertSame($this->fixture()->current->sunrise, $n['sunrise']);
-        $this->assertSame($this->fixture()->current->sunset, $n['sunset']);
-        $this->assertNull($data['current']);
+        $this->assertSame('Gedinne', $n->city);
+        $this->assertSame('BE', $n->country);
+        $this->assertEquals(50, $n->lat);
+        $this->assertEquals(5, $n->lon);
+        $this->assertSame('100', $n->asl);
+        $this->assertSame('Europe/Brussels', $n->timezone);
+        $this->assertEquals(2, $n->utcOffsetHours);
+        $this->assertSame($this->fixture()->current->sunrise, $n->sunrise);
+        $this->assertSame($this->fixture()->current->sunset, $n->sunset);
     }
 
     public function testForecastRowsAreCurrentPlusHourlyPlusDaily(): void
     {
         $fixture = $this->fixture();
-        $forecasts = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
+        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows;
 
         $this->assertCount(1 + count($fixture->hourly) + count($fixture->daily), $forecasts);
-        $this->assertSame($fixture->current->dt, $forecasts[0]['timestamp']);
-        $this->assertSame($fixture->hourly[0]->dt, $forecasts[1]['timestamp']);
-        $this->assertSame(end($fixture->daily)->dt, end($forecasts)['timestamp']);
+        $this->assertSame($fixture->current->dt, $forecasts[0]->timestamp);
+        $this->assertSame($fixture->hourly[0]->dt, $forecasts[1]->timestamp);
+        $this->assertSame(end($fixture->daily)->dt, end($forecasts)->timestamp);
     }
 
     public function testHourlyRowMapping(): void
     {
         $fixture = $this->fixture();
         $hour = $fixture->hourly[0];
-        $row = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'][1];
+        $row = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows[1];
 
-        $this->assertEquals($hour->temp, $row['temperature']);
-        $this->assertEquals($hour->feels_like, $row['apparent_temperature']);
-        $this->assertEquals($hour->wind_deg, $row['wind_direction']);
-        $this->assertEquals($hour->wind_speed, $row['wind_speed']);
-        $this->assertEquals($hour->wind_gust, $row['wind_gust_speed']);
-        $this->assertEquals($hour->clouds, $row['clouds_low']);
-        $this->assertEquals($hour->clouds, $row['clouds_mid']);
-        $this->assertEquals($hour->clouds, $row['clouds_high']);
-        $this->assertEquals($hour->pressure, $row['pressure']);
-        $this->assertEquals($hour->humidity, $row['humidity']);
-        $this->assertEquals($hour->uvi, $row['solar_radiation']);
-        $this->assertEquals($hour->pop, $row['precipation_probability']);
-        $this->assertSame('CLEAR', $row['icon']); // weather id 800
+        $this->assertEquals($hour->temp, $row->temperature);
+        $this->assertEquals($hour->feels_like, $row->apparentTemperature);
+        $this->assertEquals($hour->wind_deg, $row->windDirection);
+        $this->assertEquals($hour->wind_speed, $row->windSpeed);
+        $this->assertEquals($hour->wind_gust, $row->windGustSpeed);
+        $this->assertEquals($hour->clouds, $row->cloudsLow);
+        $this->assertEquals($hour->clouds, $row->cloudsMid);
+        $this->assertEquals($hour->clouds, $row->cloudsHigh);
+        $this->assertEquals($hour->pressure, $row->pressure);
+        $this->assertEquals($hour->humidity, $row->humidity);
+        $this->assertEquals($hour->uvi, $row->solarRadiation);
+        $this->assertEquals($hour->pop, $row->precipitationProbability);
+        $this->assertSame('CLEAR', $row->icon?->value); // weather id 800
     }
 
     public function testHourlyRainUsesOneHourValue(): void
     {
         $fixture = $this->fixture();
-        $forecasts = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
+        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows;
 
         $checked = 0;
         foreach ($fixture->hourly as $i => $hour) {
             $expected = isset($hour->rain) ? $hour->rain->{'1h'} : 0;
-            $this->assertEquals($expected, $forecasts[$i + 1]['precipation_intensity'], "hourly[$i]");
+            $this->assertEquals($expected, $forecasts[$i + 1]->precipitationIntensity, "hourly[$i]");
             $checked += isset($hour->rain) ? 1 : 0;
         }
         $this->assertGreaterThan(0, $checked, 'fixture should contain hourly rain');
@@ -117,14 +116,14 @@ class OpenWeatherMapTest extends TestCase
     public function testDailyRowsUseDayValuesAndFlatRain(): void
     {
         $fixture = $this->fixture();
-        $forecasts = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
+        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows;
         $offset = 1 + count($fixture->hourly);
 
         foreach ($fixture->daily as $i => $day) {
             $row = $forecasts[$offset + $i];
-            $this->assertEquals($day->temp->day, $row['temperature'], "daily[$i]");
-            $this->assertEquals($day->feels_like->day, $row['apparent_temperature'], "daily[$i]");
-            $this->assertEquals($day->rain ?? 0, $row['precipation_intensity'], "daily[$i]");
+            $this->assertEquals($day->temp->day, $row->temperature, "daily[$i]");
+            $this->assertEquals($day->feels_like->day, $row->apparentTemperature, "daily[$i]");
+            $this->assertEquals($day->rain ?? 0, $row->precipitationIntensity, "daily[$i]");
         }
     }
 
@@ -142,21 +141,37 @@ class OpenWeatherMapTest extends TestCase
             str_contains($url, 'onecall') ? json_encode($onecall) : file_get_contents(__DIR__.'/../fixtures/openweathermap/weather.json')
         ));
 
-        $row = new OpenWeatherMap('key', $client)->getNormalizedData(50, 5, 100)['normalized']['forecasts'][1];
+        $row = new OpenWeatherMap('key', $client)->fetchForecast(50, 5, 100)->rows[1];
 
-        $this->assertEquals(7, $row['wind_gust_speed']);
-        $this->assertSame(0, $row['precipation_probability']);
-        $this->assertSame(0, $row['precipation_intensity']);
-        $this->assertSame(0, $row['snow']);
-        $this->assertSame('SNOW_MEDIUM', $row['icon']);
+        $this->assertEquals(7, $row->windGustSpeed);
+        $this->assertSame(0.0, $row->precipitationProbability);
+        $this->assertSame(0.0, $row->precipitationIntensity);
+        $this->assertSame(0.0, $row->snow);
+        $this->assertSame('SNOW_MEDIUM', $row->icon?->value);
+    }
+
+    public function testHourlySnowUsesOneHourValue(): void
+    {
+        $onecall = $this->fixture();
+        $hour = clone $onecall->hourly[0];
+        $hour->snow = (object) ['1h' => 0.5];
+        $hour->rain = (object) ['3h' => 9]; // no 1h value: 0, not a crash
+        $onecall->hourly = [$hour];
+        $onecall->daily = [];
+        $client = new MockHttpClient(fn (string $m, string $url) => new MockResponse(
+            str_contains($url, 'onecall') ? json_encode($onecall) : file_get_contents(__DIR__.'/../fixtures/openweathermap/weather.json')
+        ));
+
+        $row = new OpenWeatherMap('key', $client)->fetchForecast(50, 5, 100)->rows[1];
+
+        $this->assertSame(0.5, $row->snow);
+        $this->assertSame(0.0, $row->precipitationIntensity);
     }
 
     #[DataProvider('codeProvider')]
     public function testWeatherCodeMapping(int $code, ?string $expected): void
     {
-        $method = new \ReflectionMethod(OpenWeatherMap::class, 'codeToText');
-
-        $this->assertSame($expected, $method->invoke(new OpenWeatherMap('key', new MockHttpClient()), $code));
+        $this->assertSame($expected, WeatherCode::toIcon($code)?->value);
     }
 
     public static function codeProvider(): array

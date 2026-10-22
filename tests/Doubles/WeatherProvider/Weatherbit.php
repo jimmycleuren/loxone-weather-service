@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Doubles\WeatherProvider;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Forecast\Forecast;
+use App\Forecast\ForecastRow;
 
 class Weatherbit extends \App\WeatherProvider\Weatherbit
 {
-    public function __construct(string $key, HttpClientInterface $client)
+    public function __construct()
     {
     }
 
@@ -20,42 +21,38 @@ class Weatherbit extends \App\WeatherProvider\Weatherbit
     {
     }
 
-    public function getNormalizedData($lat, $lon, $asl)
+    public function fetchForecast(float|int|string $lat, float|int|string $lon, int|string $asl): Forecast
     {
-        return [
-            'normalized' => [
-                'city' => 'Hasselt',
-                'lat' => 1000,
-                'lon' => 1000,
-                'asl' => 1000,
-                'country' => 'BE',
-                'timezone' => 'UTC+1',
-                'timezonediff' => 3600,
-                'sunrise' => '08:00',
-                'sunset' => '18:00',
-                'forecasts' => [
-                    [
-                        'timestamp' => 1000000,
-                        'temperature' => 23,
-                        'apparent_temperature' => 23,
-                        'wind_direction' => 80,
-                        'wind_speed' => 3,
-                        'wind_gust_speed' => 0,
-                        'clouds_low' => 100,
-                        'clouds_mid' => 100,
-                        'clouds_high' => 100,
-                        'precipation_intensity' => 0,
-                        'precipation_probability' => 0,
-                        'snow' => 0,
-                        'pressure' => 1300,
-                        'humidity' => 50,
-                        'solar_radiation' => 5,
-                        'icon' => 10,
-                    ],
-                ],
+        return new Forecast(
+            city: 'Hasselt',
+            lat: 1000.0,
+            lon: 1000.0,
+            asl: '1000',
+            country: 'BE',
+            timezone: 'UTC+1',
+            utcOffsetHours: 3600.0,
+            sunrise: '08:00',
+            sunset: '18:00',
+            rows: [
+                new ForecastRow(
+                    timestamp: 1000000,
+                    temperature: 23.0,
+                    apparentTemperature: 23.0,
+                    windSpeed: 3.0,
+                    windDirection: 80.0,
+                    windGustSpeed: 0.0,
+                    cloudsLow: 100.0,
+                    cloudsMid: 100.0,
+                    cloudsHigh: 100.0,
+                    precipitationIntensity: 0.0,
+                    precipitationProbability: 0.0,
+                    snow: 0.0,
+                    pressure: 1300.0,
+                    humidity: 50.0,
+                    solarRadiation: 5.0,
+                    icon: null,
+                ),
             ],
-            'current' => null,
-            'forecast' => null,
-        ];
+        );
     }
 }

@@ -1,0 +1,31 @@
+{
+  "data": [
+    {
+      "city_name": "Gedinne",
+      "lat": 50,
+      "lon": 5,
+      "country_code": "BE",
+      "timezone": "Europe/Brussels",
+      "sunrise": "05:41",
+      "sunset": "15:58",
+      "ts": 1792656000,
+      "temp": 9.4,
+      "app_temp": 7.1,
+      "wind_dir": 227,
+      "wind_spd": 3.61,
+      "wind_gust_spd": 7.2,
+      "clouds": 64,
+      "precip": 0.25,
+      "snow": 0,
+      "pres": 1011.5,
+      "rh": 81,
+      "solar_rad": 143.6,
+      "weather": {
+        "code": "803",
+        "icon": "c03d",
+        "description": "Broken clouds"
+      }
+    }
+  ],
+  "count": 1
+}
