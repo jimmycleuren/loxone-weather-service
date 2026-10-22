@@ -139,4 +139,20 @@ class WeatherProviderTest extends TestCase
 
         $this->assertStringContainsString(';new;', (string) $provider->getCSV('u'));
     }
+
+    public function testInvalidStoredLocationsAreSkipped(): void
+    {
+        $store = new ArrayAdapter();
+        $store->save($store->getItem('users')->set(['broken' => ['lat' => null, 'lon' => '', 'asl' => null], 'ok' => ['lat' => '50', 'lon' => '5', 'asl' => '1']]));
+
+        $weatherbit = $this->createMock(Weatherbit::class);
+        $weatherbit->expects($this->once())->method('fetchForecast')->with(new Location('50', '5', '1'))
+            ->willReturn(new Forecast(city: 'ok', lat: 0.0, lon: 0.0, asl: '1', country: 'BE', timezone: 'UTC', utcOffsetHours: 0.0, sunrise: 0, sunset: 0, rows: []));
+        $provider = new WeatherProvider(new LocationProvider(new NullLogger(), $store), $weatherbit, $this->createStub(OpenWeatherMap::class), new NullLogger(), $store, new LoxoneCsvRenderer(), 'auto', 'key', '');
+
+        $provider->updateCache();
+
+        $this->assertNull($provider->getCSV('broken'));
+        $this->assertNotNull($provider->getCSV('ok'));
+    }
 }
