@@ -15,30 +15,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: jimmycleuren/loxone-weather-service
 
       - name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build amd64 image for verification
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           load: true
@@ -46,10 +46,10 @@ jobs:
           platforms: linux/amd64
           cache-from: type=gha
 
-      - name: Verify PHP is patched against PHP2Shell (CVE-2026-109618/109619)
+      - name: "Verify PHP version (>= 8.5.12, PHP2Shell CVE-2026-109618/109619 fixed)"
         run: |
           docker run --rm lws:verify php -v
-          docker run --rm lws:verify php -r 'exit(version_compare(PHP_VERSION, "8.3.36", "<") ? 1 : 0);'
+          docker run --rm lws:verify php -r 'exit(version_compare(PHP_VERSION, "8.5.12", "<") ? 1 : 0);'
           docker run --rm lws:verify php -r 'exit(ini_get("session.upload_progress.enabled") ? 1 : 0);'
 
       - name: Verify the image end-to-end (refresh job + web requests via nginx)
@@ -79,7 +79,7 @@ jobs:
           docker rm -f php redis nginx
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}

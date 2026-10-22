@@ -1,4 +1,4 @@
-FROM php:8.3.36-fpm-bookworm
+FROM php:8.5.12-fpm-trixie
 
 ADD . /app
 

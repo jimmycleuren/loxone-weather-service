@@ -4,19 +4,14 @@ namespace App\Tests\WeatherProvider;
 
 use App\WeatherProvider\Weatherbit;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class WeatherbitTest extends TestCase
 {
-    use ProphecyTrait;
-
-    public function testUpdate()
+    public function testUpdate(): void
     {
-        $client = $this->prophesize(MockHttpClient::class);
-        $response = new MockResponse(json_encode([
+        $body = json_encode([
             'data' => [
                 [
                     'city_name' => 'test',
@@ -42,14 +37,14 @@ class WeatherbitTest extends TestCase
                     ]
                 ]
             ]
-        ]));
-        $response = MockResponse::fromRequest("GET", "url", [], $response);
-        $client->request(Argument::any(), Argument::any())->willReturn($response)->shouldBeCalledTimes(2);
+        ]);
+        $client = new MockHttpClient(fn () => new MockResponse($body));
 
-        $weatherbit = new Weatherbit("test", $client->reveal());
+        $weatherbit = new Weatherbit("test", $client);
 
         $data = $weatherbit->getNormalizedData(0, 0, 0);
         $this->assertIsArray($data);
+        $this->assertSame(2, $client->getRequestsCount());
 
         $n = $data['normalized'];
         $this->assertSame('test', $n['city']);
@@ -64,7 +59,7 @@ class WeatherbitTest extends TestCase
         $this->assertSame('RAIN_MEDIUM', $row['icon']); // code 900
     }
 
-    public function testDailyForecastFallbacksAndTimezone()
+    public function testDailyForecastFallbacksAndTimezone(): void
     {
         $current = ['data' => [[
             'city_name' => 'Genk', 'lat' => 50.9, 'lon' => 5.5, 'country_code' => 'BE', 'timezone' => 'Europe/Brussels',
