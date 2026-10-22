@@ -33,7 +33,7 @@ class FrontControllerTest extends TestCase
         $address = stream_socket_get_name($socket, false);
         fclose($socket);
 
-        $vars = ['APP_ENV' => $env, 'REDIS_URL' => $_SERVER['REDIS_URL']] + getenv();
+        $vars = ['APP_ENV' => $env, 'REDIS_URL' => $_SERVER['REDIS_URL'] ?? ''] + getenv();
 
         $clear = proc_open([PHP_BINARY, $root.'/bin/console', 'cache:clear', '--env='.$env], [1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']], $pipes, $root, $vars);
         $this->assertSame(0, proc_close($clear), "cache:clear --env=$env failed");

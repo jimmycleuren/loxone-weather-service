@@ -1,18 +1,15 @@
 services:
   _defaults:
-    autowire: true      # Automatically injects dependencies in your services.
-    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    autowire: true
+    autoconfigure: true
 
   App\Tests\Doubles\:
     resource: '../tests/Doubles'
 
   App\Tests\Doubles\WeatherProvider\Weatherbit:
-      arguments: ['%env(WEATHERBIT_KEY)%']
+    arguments: ['%env(WEATHERBIT_KEY)%']
 
-  App\WeatherProvider\WeatherProvider:
-    arguments:
-      - "@App\\LocationProvider\\LocationProvider"
-      - "@App\\Tests\\Doubles\\WeatherProvider\\Weatherbit"
-      - "@App\\WeatherProvider\\OpenWeatherMap"
-      - "@logger"
-    public: true
+  # Tests never call the real Weatherbit API. Replacing only this service keeps
+  # the rest of the wiring (store, provider choice, keys) identical to prod.
+  App\WeatherProvider\Weatherbit:
+    alias: App\Tests\Doubles\WeatherProvider\Weatherbit

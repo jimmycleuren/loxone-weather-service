@@ -53,30 +53,52 @@ jobs:
           docker run --rm lws:verify php -r 'exit(ini_get("session.upload_progress.enabled") ? 1 : 0);'
 
       - name: Verify the image end-to-end (refresh job + web requests via nginx)
-        # Runs the image the way examples/compose does. REDIS_URL is only passed as a container
-        # env var (the image's .env leaves it empty), so the refresh fails with "Invalid Redis DSN"
-        # if the job does not inherit the env. The web requests run AFTER the refresh job has
-        # written var/ (log, cache), which catches var/ files the php-fpm user cannot write.
+        # Runs the image the way examples/compose does, once with the default file storage and
+        # once with Redis. Settings are only passed as container env vars (the image's .env leaves
+        # them empty), which catches a refresh job that does not inherit the env. The web requests
+        # run AFTER the refresh job has written var/ (log, cache, data), which catches var/ files
+        # the php-fpm user cannot write.
         run: |
+          set -euo pipefail
           docker network create lws
           docker run -d --rm --name redis --network lws redis:7-alpine
+
+          verify() {
+            for _ in $(seq 1 30); do
+              docker logs php 2>&1 | grep -q 'Weather successfully retrieved' && break
+              sleep 1
+            done
+            docker logs php 2>&1 | tail -20
+            docker logs php 2>&1 | grep -q 'Weather successfully retrieved'
+            # nginx resolves the php upstream at startup, so it starts after php (per mode)
+            docker run -d --rm --name nginx --network lws -p 8080:80 \
+              -v "$PWD/examples/compose/symfony.conf:/etc/nginx/conf.d/symfony.conf:ro" nginx:latest
+            sleep 2
+            body=$(curl -s -H 'Host: weather.loxone.com' http://127.0.0.1:8080/health)
+            echo "health body: $body"
+            test "$body" = "healty"
+            code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: weather.loxone.com' 'http://127.0.0.1:8080/forecast/?coord=5.0000,50.0000&asl=100&format=1&user=e2e')
+            echo "forecast status: $code"
+            test "$code" = "200"
+          }
+
+          echo "::group::file storage (default)"
+          docker run -d --name php --network lws lws:verify
+          verify
+          # the request above stored the location as www-data under var/data
+          docker exec php sh -c 'test -n "$(find /app/var/data -type f -user www-data)"'
+          docker exec php sh -c 'test -z "$(find /app/var ! -user www-data)"'
+          docker rm -f php nginx
+          echo "::endgroup::"
+
+          echo "::group::redis storage"
           docker run -d --name php --network lws -e REDIS_URL=redis://redis lws:verify
-          for _ in $(seq 1 30); do
-            docker logs php 2>&1 | grep -q 'Weather successfully retrieved' && break
-            sleep 1
-          done
-          docker logs php 2>&1 | tail -20
-          docker logs php 2>&1 | grep -q 'Weather successfully retrieved'
-          docker run -d --rm --name nginx --network lws -p 8080:80 \
-            -v "$PWD/examples/compose/symfony.conf:/etc/nginx/conf.d/symfony.conf:ro" nginx:latest
-          sleep 2
-          body=$(curl -s -H 'Host: weather.loxone.com' http://127.0.0.1:8080/health)
-          echo "health body: $body"
-          test "$body" = "healty"
-          code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: weather.loxone.com' 'http://127.0.0.1:8080/forecast/?coord=5.0000,50.0000&asl=100&format=1')
-          echo "forecast status: $code"
-          test "$code" = "200"
-          docker rm -f php redis nginx
+          verify
+          docker exec redis redis-cli --scan | grep -qx users
+          docker rm -f php nginx
+          echo "::endgroup::"
+
+          docker rm -f redis
 
       - name: Build and push
         uses: docker/build-push-action@v7

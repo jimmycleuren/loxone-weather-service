@@ -1,31 +1,48 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+# Configuration is read from environment variables (see .env and README).
 parameters:
+    # Defaults, so an unset variable means "not configured" instead of a
+    # container error (#368).
+    env(WEATHER_PROVIDER): 'auto'
+    env(WEATHERBIT_KEY): ''
+    env(OPENWEATHERMAP_KEY): ''
+    env(REDIS_URL): ''
+    env(LAT): ''
+    env(LON): ''
+    env(ASL): ''
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
+        bind:
+            Psr\Cache\CacheItemPoolInterface $store: '@app.store'
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
+            - '../src/WeatherProvider/WeatherSource.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Locations and forecasts. Files in var/data unless REDIS_URL is set.
+    app.store:
+        class: Psr\Cache\CacheItemPoolInterface
+        factory: ['App\Storage\StoreFactory', 'create']
+        arguments:
+            - '%env(REDIS_URL)%'
+            - '%kernel.project_dir%/var/data'
 
     App\WeatherProvider\Weatherbit:
         arguments: ['%env(WEATHERBIT_KEY)%']
 
     App\WeatherProvider\OpenWeatherMap:
         arguments: ['%env(OPENWEATHERMAP_KEY)%']
+
+    App\WeatherProvider\WeatherProvider:
+        arguments:
+            $source: '%env(WEATHER_PROVIDER)%'
+            $weatherbitKey: '%env(WEATHERBIT_KEY)%'
+            $openWeatherMapKey: '%env(OPENWEATHERMAP_KEY)%'
+
+    App\LocationProvider\LocationProvider:
+        arguments:
+            $defaultLocation: ['%env(LAT)%', '%env(LON)%', '%env(ASL)%']

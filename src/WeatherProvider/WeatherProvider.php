@@ -3,45 +3,50 @@
 namespace App\WeatherProvider;
 
 use App\LocationProvider\LocationProvider;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class WeatherProvider
 {
-    private $cache;
+    private readonly WeatherSource $source;
 
-    public function __construct(private readonly LocationProvider $locationProvider, private readonly Weatherbit $weatherbit, private readonly OpenWeatherMap $openweathermap, private readonly LoggerInterface $logger)
-    {
-        $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
-        $this->cache = new RedisAdapter($client);
+    public function __construct(
+        private readonly LocationProvider $locationProvider,
+        private readonly Weatherbit $weatherbit,
+        private readonly OpenWeatherMap $openweathermap,
+        private readonly LoggerInterface $logger,
+        private readonly CacheItemPoolInterface $store,
+        string $source = 'auto',
+        private readonly string $weatherbitKey = '',
+        private readonly string $openWeatherMapKey = '',
+    ) {
+        $this->source = WeatherSource::fromConfig($source);
     }
 
     public function updateCache()
     {
         $data = [];
+        $provider = $this->selectProvider();
 
         $this->logger->info('Updating cache');
-        foreach ($this->locationProvider->getUsers() as $user) {
-            [$lat, $lon, $asl] = $this->locationProvider->getCoordinates($user);
+        if ($provider instanceof WeatherProviderInterface) {
+            foreach ($this->locationProvider->getUsers() as $user) {
+                [$lat, $lon, $asl] = $this->locationProvider->getCoordinates($user);
 
-            if (isset($_SERVER['WEATHERBIT_KEY']) && $_SERVER['WEATHERBIT_KEY']) {
                 $this->logger->info("Updating cache for $user");
-                $data[$user] = $this->weatherbit->getNormalizedData($lat, $lon, $asl);
-            } elseif (isset($_SERVER['OPENWEATHERMAP_KEY']) && $_SERVER['OPENWEATHERMAP_KEY']) {
-                $this->logger->info("Updating cache for $user");
-                $data[$user] = $this->openweathermap->getNormalizedData($lat, $lon, $asl);
+                $data[$user] = $provider->getNormalizedData($lat, $lon, $asl);
             }
         }
 
-        $item = $this->cache->getItem('weather');
+        $item = $this->store->getItem('weather');
         $item->expiresAfter(3600 * 24);
         $item->set($data);
-        $this->cache->save($item);
+        $this->store->save($item);
     }
 
     public function getCSV($user)
     {
-        $item = $this->cache->getItem('weather');
+        $item = $this->store->getItem('weather');
 
         if (!$item->isHit()) {
             return null;
@@ -105,6 +110,28 @@ class WeatherProvider
             implode("\n", $forecasts)."\n".
             "</station>\n"
         ;
+    }
+
+    private function selectProvider(): ?WeatherProviderInterface
+    {
+        $weatherbit = '' !== $this->weatherbitKey;
+        $openWeatherMap = '' !== $this->openWeatherMapKey;
+
+        $provider = match ($this->source) {
+            WeatherSource::Weatherbit => $weatherbit ? $this->weatherbit : null,
+            WeatherSource::OpenWeatherMap => $openWeatherMap ? $this->openweathermap : null,
+            WeatherSource::Auto => $weatherbit ? $this->weatherbit : ($openWeatherMap ? $this->openweathermap : null),
+        };
+
+        if (null === $provider) {
+            $this->logger->error(match ($this->source) {
+                WeatherSource::Weatherbit => 'WEATHER_PROVIDER is weatherbit, but WEATHERBIT_KEY is not set',
+                WeatherSource::OpenWeatherMap => 'WEATHER_PROVIDER is openweathermap, but OPENWEATHERMAP_KEY is not set',
+                WeatherSource::Auto => 'No weather provider configured: set WEATHERBIT_KEY or OPENWEATHERMAP_KEY',
+            });
+        }
+
+        return $provider;
     }
 
     private function getIcon($text)

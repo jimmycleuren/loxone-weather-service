@@ -21,6 +21,8 @@ RUN composer install --verbose --prefer-dist --no-dev --optimize-autoloader --no
 
 # php-fpm workers and the refresh job both run as www-data and must own var/
 # (ACLs set with setfacl do not survive the image build, so do not rely on them).
-RUN mkdir -p /app/var/cache /app/var/log && chown -R www-data:www-data /app/var
+# var/data holds locations and forecasts when REDIS_URL is not set; mount a
+# volume there to keep them across container re-creation.
+RUN mkdir -p /app/var/cache /app/var/log /app/var/data && chown -R www-data:www-data /app/var
 
 CMD ["/usr/bin/supervisord"]

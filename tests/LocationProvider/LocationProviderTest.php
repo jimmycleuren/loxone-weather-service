@@ -5,19 +5,13 @@ namespace App\Tests\LocationProvider;
 use App\LocationProvider\LocationProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class LocationProviderTest extends TestCase
 {
-    private RedisAdapter $cache;
-
-    public function testLocation()
+    public function testLocation(): void
     {
-        $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
-        $this->cache = new RedisAdapter($client);
-        $this->cache->clear();
-
-        $locationProvider = new LocationProvider(new NullLogger());
+        $locationProvider = new LocationProvider(new NullLogger(), new ArrayAdapter(), ['50.0000', '5.0000', '100']);
 
         [$lat, $lon, $asl] = $locationProvider->getCoordinates('test');
 
@@ -34,5 +28,13 @@ class LocationProviderTest extends TestCase
         $this->assertEquals('200', $asl);
 
         $this->assertEquals(['test'], $locationProvider->getUsers());
+    }
+
+    public function testWithoutDefaultLocationUnknownUsersGetEmptyCoordinates(): void
+    {
+        $locationProvider = new LocationProvider(new NullLogger(), new ArrayAdapter());
+
+        $this->assertSame(['', '', ''], $locationProvider->getCoordinates('nobody'));
+        $this->assertSame([], $locationProvider->getUsers());
     }
 }

@@ -9,7 +9,7 @@ use App\WeatherProvider\WeatherProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 /**
@@ -23,30 +23,37 @@ class CsvOutputTest extends TestCase
 {
     private const string GOLDEN = __DIR__.'/../fixtures/openweathermap/expected.csv';
 
-    private array $serverBackup;
     private string $tzBackup;
+    private ArrayAdapter $store;
 
     protected function setUp(): void
     {
-        $this->serverBackup = $_SERVER;
         $this->tzBackup = date_default_timezone_get();
         date_default_timezone_set('Europe/Brussels');
-        new RedisAdapter(RedisAdapter::createConnection($_SERVER['REDIS_URL']))->clear();
+        $this->store = new ArrayAdapter();
     }
 
     protected function tearDown(): void
     {
-        $_SERVER = $this->serverBackup;
         date_default_timezone_set($this->tzBackup);
     }
 
-    private function provider(LocationProvider $locations, ?Weatherbit $weatherbit = null, ?OpenWeatherMap $owm = null): WeatherProvider
+    private function locations(): LocationProvider
+    {
+        return new LocationProvider(new NullLogger(), $this->store);
+    }
+
+    private function provider(LocationProvider $locations, ?Weatherbit $weatherbit = null, ?OpenWeatherMap $owm = null, string $weatherbitKey = 'key', string $owmKey = 'key'): WeatherProvider
     {
         return new WeatherProvider(
             $locations,
             $weatherbit ?? $this->createStub(Weatherbit::class),
             $owm ?? new OpenWeatherMap('key', OpenWeatherMapTest::client()),
-            new NullLogger()
+            new NullLogger(),
+            $this->store,
+            'auto',
+            $weatherbitKey,
+            $owmKey,
         );
     }
 
@@ -79,12 +86,9 @@ class CsvOutputTest extends TestCase
 
     public function testOpenWeatherMapCsvMatchesGoldenFile(): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = '';
-        $_SERVER['OPENWEATHERMAP_KEY'] = 'key';
-
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('golden', 50, 5, '100');
-        $provider = $this->provider($locations);
+        $provider = $this->provider($locations, weatherbitKey: '');
         $provider->updateCache();
         $csv = $provider->getCSV('golden');
 
@@ -97,12 +101,9 @@ class CsvOutputTest extends TestCase
 
     public function testCsvStructure(): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = '';
-        $_SERVER['OPENWEATHERMAP_KEY'] = 'key';
-
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('golden', 50, 5, '100');
-        $provider = $this->provider($locations);
+        $provider = $this->provider($locations, weatherbitKey: '');
         $provider->updateCache();
         $csv = $provider->getCSV('golden');
 
@@ -126,9 +127,7 @@ class CsvOutputTest extends TestCase
 
     public function testUsersAreKeptApart(): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = 'key';
-
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('north', 60, 6, 10);
         $locations->setCoordinates('south', 40, 4, 20);
 
@@ -148,10 +147,7 @@ class CsvOutputTest extends TestCase
 
     public function testWeatherbitIsPreferredOverOpenWeatherMap(): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = 'key';
-        $_SERVER['OPENWEATHERMAP_KEY'] = 'key';
-
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('u', 50, 5, 100);
 
         $weatherbit = $this->createMock(Weatherbit::class);
@@ -164,12 +160,9 @@ class CsvOutputTest extends TestCase
 
     public function testNoProviderKeyStoresNoData(): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = '';
-        $_SERVER['OPENWEATHERMAP_KEY'] = '';
-
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('u', 50, 5, 100);
-        $provider = $this->provider($locations, null, new OpenWeatherMap('key', new MockHttpClient()));
+        $provider = $this->provider($locations, null, new OpenWeatherMap('key', new MockHttpClient()), '', '');
         $provider->updateCache();
 
         $this->assertNull($provider->getCSV('u'));
@@ -178,8 +171,7 @@ class CsvOutputTest extends TestCase
     #[DataProvider('timezoneProvider')]
     public function testUtcOffsetFormatting($diff, string $expected): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = 'key';
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('u', 50, 5, 100);
         $weatherbit = $this->createStub(Weatherbit::class);
         $weatherbit->method('getNormalizedData')->willReturn($this->normalized([$this->forecastRow()], ['timezonediff' => $diff]));
@@ -197,8 +189,7 @@ class CsvOutputTest extends TestCase
     #[DataProvider('snowProvider')]
     public function testSnowValue($snow, string $expected): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = 'key';
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('u', 50, 5, 100);
         $weatherbit = $this->createStub(Weatherbit::class);
         $weatherbit->method('getNormalizedData')->willReturn($this->normalized([$this->forecastRow(['snow' => $snow])]));
@@ -220,8 +211,7 @@ class CsvOutputTest extends TestCase
     #[DataProvider('iconProvider')]
     public function testPictoCodes(string $icon, string $expected): void
     {
-        $_SERVER['WEATHERBIT_KEY'] = 'key';
-        $locations = new LocationProvider(new NullLogger());
+        $locations = $this->locations();
         $locations->setCoordinates('u', 50, 5, 100);
         $weatherbit = $this->createStub(Weatherbit::class);
         $weatherbit->method('getNormalizedData')->willReturn($this->normalized([$this->forecastRow(['icon' => $icon])]));

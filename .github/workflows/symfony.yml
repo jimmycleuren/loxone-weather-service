@@ -30,8 +30,12 @@ jobs:
       matrix:
         php: ['8.4', '8.5']
         include:
+          # 8.4 runs on the default file storage, 8.5 on Redis: both backends are covered.
+          - php: '8.4'
+            redis_url: ''
           - php: '8.5'
             coverage: true
+            redis_url: 'redis://localhost:6379'
 
     steps:
       - uses: actions/checkout@v7
@@ -74,13 +78,13 @@ jobs:
       - name: Run phpunit
         if: ${{ !matrix.coverage }}
         env:
-          REDIS_URL: "redis://localhost:6379"
+          REDIS_URL: ${{ matrix.redis_url }}
         run: vendor/bin/phpunit
 
       - name: Run phpunit with coverage (minimum 95% lines)
         if: ${{ matrix.coverage }}
         env:
-          REDIS_URL: "redis://localhost:6379"
+          REDIS_URL: ${{ matrix.redis_url }}
         run: |
           vendor/bin/phpunit --coverage-text=coverage.txt --colors=never
           cat coverage.txt

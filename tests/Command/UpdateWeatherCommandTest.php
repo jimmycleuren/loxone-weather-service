@@ -26,12 +26,11 @@ class UpdateWeatherCommandTest extends KernelTestCase
 
     private function testerWith(WeatherProvider $weatherProvider): CommandTester
     {
-        $kernel = static::createKernel();
-        $application = new Application($kernel);
-        $kernel->boot();
-        $kernel->getContainer()->set(WeatherProvider::class, $weatherProvider);
+        $kernel = static::bootKernel();
+        // the test container may replace private services
+        static::getContainer()->set(WeatherProvider::class, $weatherProvider);
 
-        return new CommandTester($application->find('app:update-weather'));
+        return new CommandTester(new Application($kernel)->find('app:update-weather'));
     }
 
     public function testFailure(): void
