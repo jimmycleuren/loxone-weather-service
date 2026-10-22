@@ -2,6 +2,9 @@
 
 namespace App\WeatherProvider;
 
+use App\Forecast\Forecast;
+use App\Forecast\ForecastRow;
+use App\Forecast\WeatherCode;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OpenWeatherMap implements WeatherProviderInterface
@@ -24,73 +27,53 @@ class OpenWeatherMap implements WeatherProviderInterface
         return json_decode($response->getContent());
     }
 
-    public function getNormalizedData($lat, $lon, $asl)
+    public function fetchForecast(float|int|string $lat, float|int|string $lon, int|string $asl): Forecast
     {
         $current = $this->getCurrentWeather($lat, $lon);
         $forecast = $this->getForecast($lat, $lon);
 
-        $normalizedforecast = [];
-
+        $rows = [];
         foreach (array_merge([$forecast->current], $forecast->hourly, $forecast->daily) as $row) {
-            $normalizedforecast[] = [
-                'timestamp' => $row->dt,
-                'temperature' => $row->temp->day ?? $row->temp,
-                'apparent_temperature' => $row->feels_like->day ?? $row->feels_like,
-                'wind_direction' => $row->wind_deg,
-                'wind_speed' => $row->wind_speed,
-                'wind_gust_speed' => $row->wind_gust ?? $row->wind_speed,
-                'clouds_low' => $row->clouds_low ?? $row->clouds,
-                'clouds_mid' => $row->clouds_mid ?? $row->clouds,
-                'clouds_high' => $row->clouds_hi ?? $row->clouds,
-                'precipation_intensity' => $row->rain->{'1h'} ?? $row->rain ?? 0,
-                'precipation_probability' => $row->pop ?? 0,
-                'snow' => $row->snow ?? 0,
-                'pressure' => $row->pressure,
-                'humidity' => $row->humidity,
-                'solar_radiation' => $row->uvi,
-                'icon' => $this->codeToText($row->weather[0]->id),
-            ];
+            $rows[] = new ForecastRow(
+                timestamp: Json::int($row->dt),
+                // daily rows report temperatures per part of the day
+                temperature: Json::float($row->temp->day ?? $row->temp),
+                apparentTemperature: Json::float($row->feels_like->day ?? $row->feels_like),
+                windSpeed: Json::float($row->wind_speed),
+                windDirection: Json::float($row->wind_deg),
+                windGustSpeed: Json::float($row->wind_gust ?? $row->wind_speed),
+                cloudsLow: Json::float($row->clouds_low ?? $row->clouds),
+                cloudsMid: Json::float($row->clouds_mid ?? $row->clouds),
+                cloudsHigh: Json::float($row->clouds_hi ?? $row->clouds),
+                precipitationIntensity: $this->amount($row->rain ?? 0),
+                precipitationProbability: Json::float($row->pop ?? 0),
+                snow: $this->amount($row->snow ?? 0),
+                pressure: Json::float($row->pressure),
+                humidity: Json::float($row->humidity),
+                solarRadiation: Json::float($row->uvi),
+                icon: WeatherCode::toIcon(Json::int($row->weather[0]->id)),
+            );
         }
 
-        return [
-            'normalized' => [
-                // 'city' => $forecast->data[0]->city_name,
-                'city' => $current->name,
-                'lat' => $forecast->lat,
-                'lon' => $forecast->lon,
-                'asl' => $asl,
-                // 'country' => $current->data[0]->country_code,
-                'country' => $current->sys->country,
-                'timezone' => $forecast->timezone,
-                'timezonediff' => $forecast->timezone_offset / 3600,
-                'sunrise' => $forecast->current->sunrise,
-                'sunset' => $forecast->current->sunset,
-                'forecasts' => $normalizedforecast,
-            ],
-            'current' => null,
-            'forecast' => $forecast,
-        ];
+        return new Forecast(
+            city: Json::string($current->name),
+            lat: Json::float($forecast->lat),
+            lon: Json::float($forecast->lon),
+            asl: (string) $asl,
+            country: Json::string($current->sys->country),
+            timezone: Json::string($forecast->timezone),
+            utcOffsetHours: Json::int($forecast->timezone_offset) / 3600,
+            sunrise: Json::intOrString($forecast->current->sunrise),
+            sunset: Json::intOrString($forecast->current->sunset),
+            rows: $rows,
+        );
     }
 
-    private function codeToText(int|string $code): ?string
+    /**
+     * Hourly rows report rain/snow as {"1h": mm}, daily rows as a number.
+     */
+    private function amount(mixed $value): float
     {
-        // The APIs send numeric codes; cast so match (strict) behaves like the old loose switch.
-        return match ((int) $code) {
-            200, 201, 230, 231 => 'STORM_MEDIUM',
-            202, 232, 233 => 'STORM_HEAVY',
-            300, 301, 500, 520 => 'RAIN_LIGHT',
-            302, 501, 511, 521, 900 => 'RAIN_MEDIUM',
-            502, 522 => 'RAIN_HEAVY',
-            600, 610, 611 => 'SNOW_LIGHT',
-            601, 612, 621 => 'SNOW_MEDIUM',
-            602, 622, 623 => 'SNOW_HEAVY',
-            700, 711, 721, 731, 741, 751 => 'FOG',
-            800 => 'CLEAR',
-            801 => 'CLOUDS_LIGHT',
-            802 => 'CLOUDS_MEDIUM',
-            803 => 'CLOUDS_HEAVY',
-            804 => 'CLOUDY',
-            default => null,
-        };
+        return Json::float(\is_object($value) ? ($value->{'1h'} ?? 0) : $value);
     }
 }

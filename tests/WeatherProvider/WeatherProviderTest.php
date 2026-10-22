@@ -2,7 +2,9 @@
 
 namespace App\Tests\WeatherProvider;
 
+use App\Forecast\Forecast;
 use App\LocationProvider\LocationProvider;
+use App\Loxone\LoxoneCsvRenderer;
 use App\WeatherProvider\OpenWeatherMap;
 use App\WeatherProvider\Weatherbit;
 use App\WeatherProvider\WeatherProvider;
@@ -21,22 +23,20 @@ class WeatherProviderTest extends TestCase
 
         $weatherbit = $this->createMock(Weatherbit::class);
         $openweathermap = $this->createStub(OpenWeatherMap::class);
-        $weatherbit->expects($this->once())->method('getNormalizedData')->with(0, 0, 0)->willReturn([
-            'normalized' => [
-                'city' => 'Genk',
-                'lon' => '0',
-                'lat' => '0',
-                'asl' => '0',
-                'country' => 'BE',
-                'timezone' => 'GMT+2',
-                'timezonediff' => '2',
-                'sunrise' => '0800',
-                'sunset' => '1700',
-                'forecasts' => [],
-            ],
-        ]);
+        $weatherbit->expects($this->once())->method('fetchForecast')->with(0, 0, 0)->willReturn(new Forecast(
+            city: 'Genk',
+            lat: 0.0,
+            lon: 0.0,
+            asl: '0',
+            country: 'BE',
+            timezone: 'GMT+2',
+            utcOffsetHours: 2.0,
+            sunrise: '0800',
+            sunset: '1700',
+            rows: [],
+        ));
 
-        $weatherProvider = new WeatherProvider($locationProvider, $weatherbit, $openweathermap, new NullLogger(), $store, 'auto', 'key', 'key');
+        $weatherProvider = new WeatherProvider($locationProvider, $weatherbit, $openweathermap, new NullLogger(), $store, new LoxoneCsvRenderer(), 'auto', 'key', 'key');
 
         $this->assertEquals(null, $weatherProvider->getCSV('test'));
 
@@ -69,11 +69,11 @@ class WeatherProviderTest extends TestCase
         $locations = new LocationProvider(new NullLogger(), $store);
         $locations->setCoordinates('u', 1, 2, 3);
 
-        $normalized = ['normalized' => ['city' => 'x', 'lon' => 0, 'lat' => 0, 'asl' => 0, 'country' => 'BE', 'timezone' => 'UTC', 'timezonediff' => 0, 'sunrise' => 0, 'sunset' => 0, 'forecasts' => []]];
+        $normalized = new Forecast(city: 'x', lat: 0.0, lon: 0.0, asl: '0', country: 'BE', timezone: 'UTC', utcOffsetHours: 0.0, sunrise: 0, sunset: 0, rows: []);
         $weatherbit = $this->createMock(Weatherbit::class);
-        $weatherbit->expects('weatherbit' === $expected ? $this->once() : $this->never())->method('getNormalizedData')->willReturn($normalized);
+        $weatherbit->expects('weatherbit' === $expected ? $this->once() : $this->never())->method('fetchForecast')->willReturn($normalized);
         $owm = $this->createMock(OpenWeatherMap::class);
-        $owm->expects('openweathermap' === $expected ? $this->once() : $this->never())->method('getNormalizedData')->willReturn($normalized);
+        $owm->expects('openweathermap' === $expected ? $this->once() : $this->never())->method('fetchForecast')->willReturn($normalized);
 
         $logger = new class extends AbstractLogger {
             /** @var list<string> */
@@ -87,7 +87,7 @@ class WeatherProviderTest extends TestCase
             }
         };
 
-        $provider = new WeatherProvider($locations, $weatherbit, $owm, $logger, $store, $source, $weatherbitKey, $owmKey);
+        $provider = new WeatherProvider($locations, $weatherbit, $owm, $logger, $store, new LoxoneCsvRenderer(), $source, $weatherbitKey, $owmKey);
         $provider->updateCache();
 
         if (null === $expected) {
@@ -110,7 +110,30 @@ class WeatherProviderTest extends TestCase
             $this->createStub(OpenWeatherMap::class),
             new NullLogger(),
             new ArrayAdapter(),
+            new LoxoneCsvRenderer(),
             'darksky',
         );
+    }
+
+    /**
+     * Releases up to v0.2.x stored arrays under 'weather'. After an upgrade
+     * that entry is a miss (not a crash) and the next refresh replaces it.
+     */
+    public function testWeatherStoredByOlderReleasesIsAMiss(): void
+    {
+        $store = new ArrayAdapter();
+        $store->save($store->getItem('weather')->set(['u' => ['normalized' => ['city' => 'old', 'forecasts' => []], 'current' => null, 'forecast' => null]]));
+        $locations = new LocationProvider(new NullLogger(), $store);
+        $locations->setCoordinates('u', 1, 2, 3);
+
+        $weatherbit = $this->createStub(Weatherbit::class);
+        $weatherbit->method('fetchForecast')->willReturn(new Forecast(city: 'new', lat: 0.0, lon: 0.0, asl: '3', country: 'BE', timezone: 'UTC', utcOffsetHours: 0.0, sunrise: 0, sunset: 0, rows: []));
+        $provider = new WeatherProvider($locations, $weatherbit, $this->createStub(OpenWeatherMap::class), new NullLogger(), $store, new LoxoneCsvRenderer(), 'auto', 'key', '');
+
+        $this->assertNull($provider->getCSV('u'));
+
+        $provider->updateCache();
+
+        $this->assertStringContainsString(';new;', (string) $provider->getCSV('u'));
     }
 }

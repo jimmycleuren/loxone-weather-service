@@ -2,6 +2,7 @@
 
 namespace App\Tests\WeatherProvider;
 
+use App\Forecast\Forecast;
 use App\WeatherProvider\Weatherbit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -42,21 +43,21 @@ class WeatherbitTest extends TestCase
 
         $weatherbit = new Weatherbit('test', $client);
 
-        $data = $weatherbit->getNormalizedData(0, 0, 0);
-        $this->assertIsArray($data);
+        $data = $weatherbit->fetchForecast(0, 0, 0);
+        $this->assertInstanceOf(Forecast::class, $data);
         $this->assertSame(2, $client->getRequestsCount());
 
-        $n = $data['normalized'];
-        $this->assertSame('test', $n['city']);
-        $this->assertSame('BE', $n['country']);
-        $this->assertSame('CET', $n['timezone']);
-        $this->assertCount(2, $n['forecasts']); // current + 1 forecast row (same mock response)
-        $row = $n['forecasts'][0];
-        $this->assertSame(123456789, $row['timestamp']);
-        $this->assertEquals(30, $row['temperature']);
-        $this->assertEquals(0, $row['wind_gust_speed']); // missing -> 0
-        $this->assertEquals(0, $row['precipation_probability']); // no pop, no precip -> 0
-        $this->assertSame('RAIN_MEDIUM', $row['icon']); // code 900
+        $n = $data;
+        $this->assertSame('test', $n->city);
+        $this->assertSame('BE', $n->country);
+        $this->assertSame('CET', $n->timezone);
+        $this->assertCount(2, $n->rows); // current + 1 forecast row (same mock response)
+        $row = $n->rows[0];
+        $this->assertSame(123456789, $row->timestamp);
+        $this->assertEquals(30, $row->temperature);
+        $this->assertEquals(0, $row->windGustSpeed); // missing -> 0
+        $this->assertEquals(0, $row->precipitationProbability); // no pop, no precip -> 0
+        $this->assertSame('RAIN_MEDIUM', $row->icon?->value); // code 900
     }
 
     public function testDailyForecastFallbacksAndTimezone(): void
@@ -77,23 +78,23 @@ class WeatherbitTest extends TestCase
             str_contains($url, '/current') ? $current : $daily
         )));
 
-        $n = new Weatherbit('key', $client)->getNormalizedData(50.9, 5.5, 60)['normalized'];
+        $n = new Weatherbit('key', $client)->fetchForecast(50.9, 5.5, 60);
 
-        $this->assertSame('Genk', $n['city']);
-        $this->assertSame(60, $n['asl']);
-        $this->assertEquals(2, $n['timezonediff']);
-        $current = $n['forecasts'][0];
-        $this->assertEquals(100, $current['precipation_probability']); // precip > 0, no pop
-        $this->assertEquals(8, $current['wind_gust_speed']);
-        $this->assertSame('RAIN_LIGHT', $current['icon']);
-        $day = $n['forecasts'][1];
-        $this->assertEquals(15, $day['temperature']);
-        $this->assertEquals(14, $day['apparent_temperature']);
-        $this->assertEquals(10, $day['clouds_low']);
-        $this->assertEquals(30, $day['clouds_high']);
-        $this->assertEquals(60, $day['precipation_probability']);
-        $this->assertEquals(300, $day['solar_radiation']);
-        $this->assertSame('SNOW_HEAVY', $day['icon']);
+        $this->assertSame('Genk', $n->city);
+        $this->assertSame('60', $n->asl);
+        $this->assertEquals(2, $n->utcOffsetHours);
+        $current = $n->rows[0];
+        $this->assertEquals(100, $current->precipitationProbability); // precip > 0, no pop
+        $this->assertEquals(8, $current->windGustSpeed);
+        $this->assertSame('RAIN_LIGHT', $current->icon?->value);
+        $day = $n->rows[1];
+        $this->assertEquals(15, $day->temperature);
+        $this->assertEquals(14, $day->apparentTemperature);
+        $this->assertEquals(10, $day->cloudsLow);
+        $this->assertEquals(30, $day->cloudsHigh);
+        $this->assertEquals(60, $day->precipitationProbability);
+        $this->assertEquals(300, $day->solarRadiation);
+        $this->assertSame('SNOW_HEAVY', $day->icon?->value);
     }
 
     public function testWeatherCodeAsStringIsMapped(): void
@@ -105,8 +106,8 @@ class WeatherbitTest extends TestCase
         ];
         $client = new MockHttpClient(fn () => new MockResponse(json_encode(['data' => [$row]])));
 
-        $forecasts = new Weatherbit('key', $client)->getNormalizedData(0, 0, 0)['normalized']['forecasts'];
+        $forecasts = new Weatherbit('key', $client)->fetchForecast(0, 0, 0)->rows;
 
-        $this->assertSame('CLOUDS_HEAVY', $forecasts[0]['icon']);
+        $this->assertSame('CLOUDS_HEAVY', $forecasts[0]->icon?->value);
     }
 }
