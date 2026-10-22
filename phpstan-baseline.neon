@@ -49,36 +49,6 @@ parameters:
 			path: src/LocationProvider/LocationProvider.php
 
 		-
-			message: '#^Cannot call method get\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Cannot call method getItem\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Cannot call method isHit\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Cannot call method save\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Cannot call method set\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
 			message: '#^Method App\\LocationProvider\\LocationProvider\:\:getCoordinates\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -133,12 +103,6 @@ parameters:
 			path: src/LocationProvider/LocationProvider.php
 
 		-
-			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
 			message: '#^Part \$asl \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
 			count: 1
@@ -159,12 +123,6 @@ parameters:
 		-
 			message: '#^Part \$user \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Property App\\LocationProvider\\LocationProvider\:\:\$cache has no type specified\.$#'
-			identifier: missingType.property
 			count: 1
 			path: src/LocationProvider/LocationProvider.php
 
@@ -649,42 +607,6 @@ parameters:
 			path: src/WeatherProvider/WeatherProvider.php
 
 		-
-			message: '#^Cannot call method expiresAfter\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Cannot call method get\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Cannot call method getItem\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Cannot call method isHit\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Cannot call method save\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Cannot call method set\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
 			message: '#^Cannot use array destructuring on mixed\.$#'
 			identifier: offsetAccess.nonArray
 			count: 1
@@ -721,12 +643,6 @@ parameters:
 			path: src/WeatherProvider/WeatherProvider.php
 
 		-
-			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
 			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<int, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -747,18 +663,12 @@ parameters:
 		-
 			message: '#^Part \$user \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
-			count: 2
+			count: 1
 			path: src/WeatherProvider/WeatherProvider.php
 
 		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
-			count: 2
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Property App\\WeatherProvider\\WeatherProvider\:\:\$cache has no type specified\.$#'
-			identifier: missingType.property
 			count: 1
 			path: src/WeatherProvider/WeatherProvider.php
 
@@ -1237,18 +1147,6 @@ parameters:
 			path: tests/LocationProvider/LocationProviderTest.php
 
 		-
-			message: '#^Method App\\Tests\\LocationProvider\\LocationProviderTest\:\:testLocation\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: tests/LocationProvider/LocationProviderTest.php
-
-		-
-			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/LocationProvider/LocationProviderTest.php
-
-		-
 			message: '#^Method App\\Tests\\Smoke\\FrontControllerTest\:\:envProvider\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1417,12 +1315,6 @@ parameters:
 			path: tests/WeatherProvider/CsvOutputTest.php
 
 		-
-			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/WeatherProvider/CsvOutputTest.php
-
-		-
 			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
 			identifier: argument.type
 			count: 2
@@ -1449,12 +1341,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$string of method PHPUnit\\Framework\\Assert\:\:assertStringStartsWith\(\) expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: tests/WeatherProvider/CsvOutputTest.php
-
-		-
-			message: '#^Property App\\Tests\\WeatherProvider\\CsvOutputTest\:\:\$serverBackup type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: tests/WeatherProvider/CsvOutputTest.php
 
@@ -1835,12 +1721,6 @@ parameters:
 			identifier: encapsedStringPart.nonString
 			count: 4
 			path: tests/WeatherProvider/OpenWeatherMapTest.php
-
-		-
-			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/WeatherProvider/WeatherProviderTest.php
 
 		-
 			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'

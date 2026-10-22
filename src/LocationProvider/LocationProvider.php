@@ -2,22 +2,24 @@
 
 namespace App\LocationProvider;
 
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class LocationProvider
 {
-    private $cache;
-
-    public function __construct(private readonly LoggerInterface $logger)
-    {
-        $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
-        $this->cache = new RedisAdapter($client);
+    /**
+     * @param array{string, string, string} $defaultLocation lat, lon, asl for users without a stored location
+     */
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly CacheItemPoolInterface $store,
+        private readonly array $defaultLocation = ['', '', ''],
+    ) {
     }
 
     public function getUsers()
     {
-        $item = $this->cache->getItem('users');
+        $item = $this->store->getItem('users');
 
         if (!$item->isHit()) {
             return [];
@@ -28,7 +30,7 @@ class LocationProvider
 
     public function getCoordinates($user)
     {
-        $item = $this->cache->getItem('users');
+        $item = $this->store->getItem('users');
 
         if ($item->isHit()) {
             $data = $item->get();
@@ -38,14 +40,14 @@ class LocationProvider
             }
         }
 
-        return [$_SERVER['LAT'], $_SERVER['LON'], $_SERVER['ASL']];
+        return $this->defaultLocation;
     }
 
     public function setCoordinates($user, $lat, $lon, $asl)
     {
         $this->logger->info("Saving location for $user: lat=$lat, lon=$lon, asl=$asl");
 
-        $item = $this->cache->getItem('users');
+        $item = $this->store->getItem('users');
 
         if ($item->isHit()) {
             $data = $item->get();
@@ -57,6 +59,6 @@ class LocationProvider
 
         $item->set($data);
 
-        $this->cache->save($item);
+        $this->store->save($item);
     }
 }
