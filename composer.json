@@ -20,7 +20,7 @@
         "symfony/yaml": "6.4.*"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.11.11",
+        "phpstan/phpstan": "^2.3.1",
         "phpunit/phpunit": "^13.4",
         "symfony/browser-kit": "6.4.*",
         "symfony/maker-bundle": "^1.24"
