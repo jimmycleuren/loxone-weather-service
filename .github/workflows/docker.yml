@@ -62,8 +62,6 @@ jobs:
           set -euo pipefail
           docker network create lws
           docker run -d --rm --name redis --network lws redis:7-alpine
-          docker run -d --rm --name nginx --network lws -p 8080:80 \
-            -v "$PWD/examples/compose/symfony.conf:/etc/nginx/conf.d/symfony.conf:ro" nginx:latest
 
           verify() {
             for _ in $(seq 1 30); do
@@ -72,6 +70,9 @@ jobs:
             done
             docker logs php 2>&1 | tail -20
             docker logs php 2>&1 | grep -q 'Weather successfully retrieved'
+            # nginx resolves the php upstream at startup, so it starts after php (per mode)
+            docker run -d --rm --name nginx --network lws -p 8080:80 \
+              -v "$PWD/examples/compose/symfony.conf:/etc/nginx/conf.d/symfony.conf:ro" nginx:latest
             sleep 2
             body=$(curl -s -H 'Host: weather.loxone.com' http://127.0.0.1:8080/health)
             echo "health body: $body"
@@ -87,17 +88,17 @@ jobs:
           # the request above stored the location as www-data under var/data
           docker exec php sh -c 'test -n "$(find /app/var/data -type f -user www-data)"'
           docker exec php sh -c 'test -z "$(find /app/var ! -user www-data)"'
-          docker rm -f php
+          docker rm -f php nginx
           echo "::endgroup::"
 
           echo "::group::redis storage"
           docker run -d --name php --network lws -e REDIS_URL=redis://redis lws:verify
           verify
           docker exec redis redis-cli --scan | grep -qx users
-          docker rm -f php
+          docker rm -f php nginx
           echo "::endgroup::"
 
-          docker rm -f redis nginx
+          docker rm -f redis
 
       - name: Build and push
         uses: docker/build-push-action@v7
