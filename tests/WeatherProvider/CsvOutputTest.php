@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
 /**
  * Locks down the exact CSV the Loxone Miniserver receives.
@@ -22,6 +23,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 class CsvOutputTest extends TestCase
 {
     private const string GOLDEN = __DIR__.'/../fixtures/openweathermap/expected.csv';
+    private const string GOLDEN_WEATHERBIT = __DIR__.'/../fixtures/weatherbit/expected.csv';
 
     private string $tzBackup;
     private ArrayAdapter $store;
@@ -97,6 +99,30 @@ class CsvOutputTest extends TestCase
         }
 
         $this->assertSame(file_get_contents(self::GOLDEN), $csv);
+    }
+
+    /**
+     * Same lock for Weatherbit: daily rows, string weather codes, pop/precip
+     * fallbacks, an unmapped code (701) and a DST change in the forecast.
+     */
+    public function testWeatherbitCsvMatchesGoldenFile(): void
+    {
+        $fixtures = __DIR__.'/../fixtures/weatherbit/';
+        $client = new MockHttpClient(fn (string $method, string $url) => new MockResponse(
+            (string) file_get_contents($fixtures.(str_contains($url, '/current') ? 'current.json' : 'daily.json'))
+        ));
+
+        $locations = $this->locations();
+        $locations->setCoordinates('golden', 50, 5, '100');
+        $provider = $this->provider($locations, new Weatherbit('key', $client), owmKey: '');
+        $provider->updateCache();
+        $csv = $provider->getCSV('golden');
+
+        if (getenv('UPDATE_GOLDEN')) {
+            file_put_contents(self::GOLDEN_WEATHERBIT, $csv);
+        }
+
+        $this->assertSame(file_get_contents(self::GOLDEN_WEATHERBIT), $csv);
     }
 
     public function testCsvStructure(): void

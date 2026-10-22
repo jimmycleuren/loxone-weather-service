@@ -1,0 +1,17 @@
+<mb_metadata>
+id;name;longitude;latitude;height (m.asl.);country;timezone;utc-timedifference;sunrise;sunset;
+local date;weekday;local time;temperature(C);feeledTemperature(C);windspeed(km/h);winddirection(degr);wind gust(km/h);low clouds(%);medium clouds(%);high clouds(%);precipitation(mm);probability of Precip(%);snowFraction;sea level pressure(hPa);relative humidity(%);CAPE;picto-code;radiation (W/m2)
+</mb_metadata>
+<valid_until>2100-01-01</valid_until>
+<station>
+;Gedinne;5;50;100;BE;Europe/Brussels;UTC+1;05:41;15:58;
+22.10.2026;Thursday;10;  9.4;  7.1;  4;227;  7; 64; 64; 64;  0.2;100;0.0;1012; 81;     0;19; 144
+22.10.2026;Thursday;00; 10.5;  8.2;  2;200;  6;  0;  0;  0;  0.0;  0;0.0;1005; 60;     0;31; 300
+23.10.2026;Friday;00; 11.2;  8.8;  3;217;  7;  5;  7;  9;  1.2;100;2.5;1007; 63;     0;24; 250
+24.10.2026;Saturday;00; 11.9;  9.2;  3;234;  8; 10; 14; 18;  0.1; 25;0.0;1008; 66;     0;7;   0
+25.10.2026;Sunday;00; 12.6;  9.8;  3;251;  9; 15; 21; 27;  3.0;100;0.0;1010; 69;     0;0; 120
+25.10.2026;Sunday;23; 13.3; 10.2;  4;268; 10; 20; 28; 36;  0.0; 80;0.0;1012; 72;     0;27; 100
+26.10.2026;Monday;23; 14.0; 10.8;  4;285; 11; 25; 35; 45; 12.5;100;0.0;1014; 75;     0;1; 410
+27.10.2026;Tuesday;23; 14.7; 11.2;  4;302; 12; 30; 42; 54;  0.4; 95;10.0;1016; 78;     0;24;  15
+28.10.2026;Wednesday;23; 15.4; 11.8;  5;319; 13; 35; 49; 63;  0.0;  0;0.0;1017; 81;     0;23;  77
+</station>
