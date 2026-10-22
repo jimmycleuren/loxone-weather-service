@@ -4,27 +4,22 @@ namespace App\WeatherProvider;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class Weatherbit implements WeatherProviderInterface {
-
-    private $key;
-    private $client;
-
-    public function __construct(string $key, HttpClientInterface $client)
+class Weatherbit implements WeatherProviderInterface
+{
+    public function __construct(private readonly string $key, private readonly HttpClientInterface $client)
     {
-        $this->key = $key;
-        $this->client = $client;
     }
 
     public function getCurrentWeather($lat, $lon)
     {
-        $response = $this->client->request("GET", "https://api.weatherbit.io/v2.0/current?key=$this->key&lat=$lat&lon=$lon");
+        $response = $this->client->request('GET', "https://api.weatherbit.io/v2.0/current?key=$this->key&lat=$lat&lon=$lon");
 
         return json_decode($response->getContent());
     }
 
     public function getForecast($lat, $lon)
     {
-        $response = $this->client->request("GET", "https://api.weatherbit.io/v2.0/forecast/daily?key=$this->key&lat=$lat&lon=$lon");
+        $response = $this->client->request('GET', "https://api.weatherbit.io/v2.0/forecast/daily?key=$this->key&lat=$lat&lon=$lon");
 
         return json_decode($response->getContent())->data;
     }
@@ -54,7 +49,7 @@ class Weatherbit implements WeatherProviderInterface {
                 'pressure' => $row->pres,
                 'humidity' => $row->rh,
                 'solar_radiation' => $row->solar_rad ?? $row->max_dhi,
-                'icon' => $this->codeToText($row->weather->code)
+                'icon' => $this->codeToText($row->weather->code),
             ];
             if (isset($row->timestamp_local) && isset($row->timestamp_utc)) {
                 $timezonediff = (strtotime($row->timestamp_local) - strtotime($row->timestamp_utc)) / 3600;
@@ -72,65 +67,32 @@ class Weatherbit implements WeatherProviderInterface {
                 'timezonediff' => $timezonediff,
                 'sunrise' => $current->data[0]->sunrise,
                 'sunset' => $current->data[0]->sunset,
-                'forecasts' => $normalizedforecast
+                'forecasts' => $normalizedforecast,
             ],
             'current' => $current,
-            'forecast' => $forecast
+            'forecast' => $forecast,
         ];
     }
 
-    private function codeToText($code)
+    private function codeToText(int|string $code): ?string
     {
-        switch($code) {
-            case 200: return 'STORM_MEDIUM';
-            case 201: return 'STORM_MEDIUM';
-            case 202: return 'STORM_HEAVY';
-
-            case 230: return 'STORM_MEDIUM';
-            case 231: return 'STORM_MEDIUM';
-            case 232: return 'STORM_HEAVY';
-            case 233: return 'STORM_HEAVY';
-
-            case 300: return 'RAIN_LIGHT';
-            case 301: return 'RAIN_LIGHT';
-            case 302: return 'RAIN_MEDIUM';
-
-            case 500: return 'RAIN_LIGHT';
-            case 501: return 'RAIN_MEDIUM';
-            case 502: return 'RAIN_HEAVY';
-
-            case 511: return 'RAIN_MEDIUM';
-
-            case 520: return 'RAIN_LIGHT';
-            case 521: return 'RAIN_MEDIUM';
-            case 522: return 'RAIN_HEAVY';
-
-            case 600: return 'SNOW_LIGHT';
-            case 601: return 'SNOW_MEDIUM';
-            case 602: return 'SNOW_HEAVY';
-
-            case 610: return 'SNOW_LIGHT';
-            case 611: return 'SNOW_LIGHT';
-            case 612: return 'SNOW_MEDIUM';
-
-            case 621: return 'SNOW_MEDIUM';
-            case 622: return 'SNOW_HEAVY';
-            case 623: return 'SNOW_HEAVY';
-
-            case 700: return 'FOG';
-            case 711: return 'FOG';
-            case 721: return 'FOG';
-            case 731: return 'FOG';
-            case 741: return 'FOG';
-            case 751: return 'FOG';
-
-            case 800: return 'CLEAR';
-            case 801: return 'CLOUDS_LIGHT';
-            case 802: return 'CLOUDS_MEDIUM';
-            case 803: return 'CLOUDS_HEAVY';
-            case 804: return 'CLOUDY';
-
-            case 900: return 'RAIN_MEDIUM';
-        }
+        // The APIs send numeric codes; cast so match (strict) behaves like the old loose switch.
+        return match ((int) $code) {
+            200, 201, 230, 231 => 'STORM_MEDIUM',
+            202, 232, 233 => 'STORM_HEAVY',
+            300, 301, 500, 520 => 'RAIN_LIGHT',
+            302, 501, 511, 521, 900 => 'RAIN_MEDIUM',
+            502, 522 => 'RAIN_HEAVY',
+            600, 610, 611 => 'SNOW_LIGHT',
+            601, 612, 621 => 'SNOW_MEDIUM',
+            602, 622, 623 => 'SNOW_HEAVY',
+            700, 711, 721, 731, 741, 751 => 'FOG',
+            800 => 'CLEAR',
+            801 => 'CLOUDS_LIGHT',
+            802 => 'CLOUDS_MEDIUM',
+            803 => 'CLOUDS_HEAVY',
+            804 => 'CLOUDY',
+            default => null,
+        };
     }
 }

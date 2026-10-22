@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\WeatherProvider\WeatherProvider;
@@ -14,14 +16,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'app:update-weather', description: 'Update the weather forecast from the configured providers')]
 class UpdateWeatherCommand extends Command
 {
-    private $weatherProvider;
-    private $logger;
-
-    public function __construct(WeatherProvider $weatherProvider, LoggerInterface $logger, ?string $name = null)
+    public function __construct(private readonly WeatherProvider $weatherProvider, private readonly LoggerInterface $logger, ?string $name = null)
     {
-        $this->weatherProvider = $weatherProvider;
-        $this->logger = $logger;
-
         parent::__construct($name);
     }
 

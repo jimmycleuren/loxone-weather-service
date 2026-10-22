@@ -61,7 +61,7 @@ jobs:
           docker network create lws
           docker run -d --rm --name redis --network lws redis:7-alpine
           docker run -d --name php --network lws -e REDIS_URL=redis://redis lws:verify
-          for i in $(seq 1 30); do
+          for _ in $(seq 1 30); do
             docker logs php 2>&1 | grep -q 'Weather successfully retrieved' && break
             sleep 1
           done

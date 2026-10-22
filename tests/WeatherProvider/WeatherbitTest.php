@@ -33,14 +33,14 @@ class WeatherbitTest extends TestCase
                     'rh' => 0,
                     'solar_rad' => 0,
                     'weather' => [
-                        'code' => 900
-                    ]
-                ]
-            ]
+                        'code' => 900,
+                    ],
+                ],
+            ],
         ]);
         $client = new MockHttpClient(fn () => new MockResponse($body));
 
-        $weatherbit = new Weatherbit("test", $client);
+        $weatherbit = new Weatherbit('test', $client);
 
         $data = $weatherbit->getNormalizedData(0, 0, 0);
         $this->assertIsArray($data);
@@ -77,7 +77,7 @@ class WeatherbitTest extends TestCase
             str_contains($url, '/current') ? $current : $daily
         )));
 
-        $n = (new Weatherbit('key', $client))->getNormalizedData(50.9, 5.5, 60)['normalized'];
+        $n = new Weatherbit('key', $client)->getNormalizedData(50.9, 5.5, 60)['normalized'];
 
         $this->assertSame('Genk', $n['city']);
         $this->assertSame(60, $n['asl']);
@@ -94,5 +94,19 @@ class WeatherbitTest extends TestCase
         $this->assertEquals(60, $day['precipation_probability']);
         $this->assertEquals(300, $day['solar_radiation']);
         $this->assertSame('SNOW_HEAVY', $day['icon']);
+    }
+
+    public function testWeatherCodeAsStringIsMapped(): void
+    {
+        $row = [
+            'city_name' => 'x', 'lat' => 0, 'lon' => 0, 'country_code' => 'BE', 'timezone' => 'CET', 'sunrise' => '0', 'sunset' => '0',
+            'ts' => 1, 'temp' => 1, 'app_temp' => 1, 'wind_dir' => 0, 'wind_spd' => 0, 'clouds' => 0, 'precip' => 0, 'snow' => 0,
+            'pres' => 0, 'rh' => 0, 'solar_rad' => 0, 'weather' => ['code' => '803'],
+        ];
+        $client = new MockHttpClient(fn () => new MockResponse(json_encode(['data' => [$row]])));
+
+        $forecasts = new Weatherbit('key', $client)->getNormalizedData(0, 0, 0)['normalized']['forecasts'];
+
+        $this->assertSame('CLOUDS_HEAVY', $forecasts[0]['icon']);
     }
 }

@@ -1,0 +1,1969 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Command/UpdateWeatherCommand.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Command/UpdateWeatherCommand.php
+
+		-
+			message: '#^Parameter \#1 \$content of class Symfony\\Component\\HttpFoundation\\Response constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Controller/ForecastController.php
+
+		-
+			message: '#^Parameter \#2 \$string of function explode expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Controller/ForecastController.php
+
+		-
+			message: '#^Cannot access offset ''asl'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot access offset ''lat'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot access offset ''lon'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot access offset mixed on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot call method get\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot call method getItem\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot call method isHit\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot call method save\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Cannot call method set\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:getCoordinates\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:getCoordinates\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:getUsers\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$asl with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_keys expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Part \$asl \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Part \$lat \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Part \$lon \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Part \$user \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Property App\\LocationProvider\\LocationProvider\:\:\$cache has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/LocationProvider/LocationProvider.php
+
+		-
+			message: '#^Binary operation "/" between mixed and 3600 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$1h on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$clouds on mixed\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$clouds_hi on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$clouds_low on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$clouds_mid on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$country on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$current on mixed\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$daily on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$day on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$dt on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$feels_like on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$hourly on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$humidity on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$id on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$lat on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$lon on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$name on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$pop on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$pressure on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$rain on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$snow on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$sunrise on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$sunset on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$sys on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$temp on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$timezone on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$timezone_offset on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$uvi on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$weather on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$wind_deg on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$wind_gust on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Cannot access property \$wind_speed on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getCurrentWeather\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getCurrentWeather\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getCurrentWeather\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getForecast\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getForecast\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getForecast\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getNormalizedData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getNormalizedData\(\) has parameter \$asl with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getNormalizedData\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getNormalizedData\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Parameter \#1 \$code of method App\\WeatherProvider\\OpenWeatherMap\:\:codeToText\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Parameter \#3 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Part \$lat \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Part \$lon \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/WeatherProvider/OpenWeatherMap.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 2
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Binary operation "\." between ''UTC''\|''UTC\+'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''apparent_temperature'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''asl'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''city'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''clouds_high'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''clouds_low'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''clouds_mid'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''country'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''forecasts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''humidity'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''icon'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''lat'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''lon'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''normalized'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''precipation_intensity'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''precipation_probability'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''pressure'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''snow'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''solar_radiation'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''sunrise'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''sunset'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''temperature'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''timestamp'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''timezone'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''timezonediff'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''wind_direction'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''wind_gust_speed'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset ''wind_speed'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access offset mixed on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot access property \$1h on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot call method expiresAfter\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot call method get\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot call method getItem\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot call method isHit\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot call method save\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot call method set\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Cannot use array destructuring on mixed\.$#'
+			identifier: offsetAccess.nonArray
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProvider\:\:getCSV\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProvider\:\:getCSV\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProvider\:\:getIcon\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProvider\:\:getIcon\(\) has parameter \$text with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProvider\:\:updateCache\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 15
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Part \$user \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Property App\\WeatherProvider\\WeatherProvider\:\:\$cache has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/WeatherProvider/WeatherProvider.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getCurrentWeather\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getCurrentWeather\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getCurrentWeather\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getForecast\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getForecast\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getForecast\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getNormalizedData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getNormalizedData\(\) has parameter \$asl with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getNormalizedData\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\WeatherProviderInterface\:\:getNormalizedData\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/WeatherProviderInterface.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 7
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$app_max_temp on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$app_temp on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$city_name on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$clouds on mixed\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$clouds_hi on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$clouds_low on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$clouds_mid on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$code on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$country_code on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$data on mixed\.$#'
+			identifier: property.nonObject
+			count: 9
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$lat on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$lon on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$max_dhi on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$max_temp on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$pop on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$precip on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$pres on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$rh on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$snow on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$solar_rad on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$sunrise on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$sunset on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$temp on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$timestamp_local on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$timezone on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$ts on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$weather on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$wind_dir on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$wind_gust_spd on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot access property \$wind_spd on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has parameter \$asl with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Parameter \#1 \$code of method App\\WeatherProvider\\Weatherbit\:\:codeToText\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Parameter \#1 \$datetime of function strtotime expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Part \$lat \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Part \$lon \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getCoordinates\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Method App\\Tests\\Controller\\ForecastControllerTest\:\:testForecast\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Method App\\Tests\\Controller\\ForecastControllerTest\:\:testForecastBodyIsCleanMiniserverCsv\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Method App\\Tests\\Controller\\ForecastControllerTest\:\:testFormat2ReturnsSameAsFormat1\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Method App\\Tests\\Controller\\ForecastControllerTest\:\:testRequestStoresLocationPerUser\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Method App\\Tests\\Controller\\ForecastControllerTest\:\:testUnknownFormat\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringNotContainsString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of method PHPUnit\\Framework\\Assert\:\:assertStringEndsWith\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of method PHPUnit\\Framework\\Assert\:\:assertStringStartsWith\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Method App\\Tests\\Controller\\HealthControllerTest\:\:testHealth\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Controller/HealthControllerTest.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has parameter \$asl with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has parameter \$lat with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getNormalizedData\(\) has parameter \$lon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Doubles/WeatherProvider/Weatherbit.php
+
+		-
+			message: '#^Cannot use array destructuring on mixed\.$#'
+			identifier: offsetAccess.nonArray
+			count: 2
+			path: tests/LocationProvider/LocationProviderTest.php
+
+		-
+			message: '#^Method App\\Tests\\LocationProvider\\LocationProviderTest\:\:testLocation\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/LocationProvider/LocationProviderTest.php
+
+		-
+			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/LocationProvider/LocationProviderTest.php
+
+		-
+			message: '#^Method App\\Tests\\Smoke\\FrontControllerTest\:\:envProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Parameter \#1 \$command of function proc_open expects list\<string\>\|string, array\{non\-falsy\-string, ''\-S'', string\|false, ''\-t'', non\-falsy\-string, non\-falsy\-string\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Parameter \#1 \$process of function proc_close expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Parameter \#1 \$socket of function stream_socket_get_name expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of function explode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Smoke\\FrontControllerTest\:\:\$pipes type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Property App\\Tests\\Smoke\\FrontControllerTest\:\:\$server \(resource\|null\) does not accept resource\|false\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Smoke/FrontControllerTest.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Cannot access offset 1 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Cannot access offset 13 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Cannot access offset 17 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Cannot access offset 2 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Cannot access offset 7 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:csvRows\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:forecastRow\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:forecastRow\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:iconProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:normalized\(\) has parameter \$forecasts with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:normalized\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:normalized\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:snowProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:testSnowValue\(\) has parameter \$snow with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:testUtcOffsetFormatting\(\) has parameter \$diff with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:timezoneProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Offset 1 might not exist on array\{\}\|array\{non\-falsy\-string, string\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_slice expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#1 \$csv of method App\\Tests\\WeatherProvider\\CsvOutputTest\:\:csvRows\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 6
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of method PHPUnit\\Framework\\Assert\:\:assertMatchesRegularExpression\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of method PHPUnit\\Framework\\Assert\:\:assertStringEndsWith\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of method PHPUnit\\Framework\\Assert\:\:assertStringStartsWith\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Property App\\Tests\\WeatherProvider\\CsvOutputTest\:\:\$serverBackup type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$current\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$daily\.$#'
+			identifier: property.notFound
+			count: 4
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$hourly\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Binary operation "\+" between int\<1, max\> and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''apparent_temperature'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''asl'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''city'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''clouds_high'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''clouds_low'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''clouds_mid'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''country'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''current'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''forecasts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 5
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''humidity'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''icon'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''lat'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''lon'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''normalized'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 6
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''precipation_intensity'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''precipation_probability'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''pressure'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''snow'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''solar_radiation'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''sunrise'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''sunset'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''temperature'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''timestamp'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''timezone'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''timezonediff'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''wind_direction'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''wind_gust_speed'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset ''wind_speed'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset \(float\|int\) on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access offset 1 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$1h on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$clouds on mixed\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$day on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$dt on mixed\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$feels_like on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$humidity on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$pop on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$pressure on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$rain on mixed\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$sunrise on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$sunset on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$temp on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$uvi on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$wind_deg on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$wind_gust on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Cannot access property \$wind_speed on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\OpenWeatherMapTest\:\:client\(\) has parameter \$requested with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\OpenWeatherMapTest\:\:codeProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Method App\\Tests\\WeatherProvider\\OpenWeatherMapTest\:\:fixture\(\) should return object but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Parameter \#1 \$array of function end expects array\|object, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Parameter \#1 \$body of class Symfony\\Component\\HttpClient\\Response\\MockResponse constructor expects iterable\<string\|Throwable\>\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 4
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Part \$i \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 4
+			path: tests/WeatherProvider/OpenWeatherMapTest.php
+
+		-
+			message: '#^Parameter \#1 \$dsn of static method Symfony\\Component\\Cache\\Adapter\\RedisAdapter\:\:createConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/WeatherProviderTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/WeatherProviderTest.php
+
+		-
+			message: '#^Cannot access offset ''apparent_temperature'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''asl'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''city'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''clouds_high'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''clouds_low'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''country'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''forecasts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 5
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''icon'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 4
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''normalized'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''precipation_probability'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''solar_radiation'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''temperature'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''timestamp'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''timezone'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''timezonediff'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset ''wind_gust_speed'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Cannot access offset 1 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Parameter \#1 \$body of class Symfony\\Component\\HttpClient\\Response\\MockResponse constructor expects iterable\<string\|Throwable\>\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/WeatherProvider/WeatherbitTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/WeatherProvider/WeatherbitTest.php

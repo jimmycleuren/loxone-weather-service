@@ -16,7 +16,7 @@ class OpenWeatherMapTest extends TestCase
 {
     public static function client(array &$requested = []): MockHttpClient
     {
-        $dir = dirname(__DIR__).'/fixtures/openweathermap';
+        $dir = __DIR__.'/../fixtures/openweathermap';
 
         return new MockHttpClient(function (string $method, string $url) use ($dir, &$requested) {
             $requested[] = $url;
@@ -31,9 +31,9 @@ class OpenWeatherMapTest extends TestCase
         });
     }
 
-    private static function fixture(): object
+    private function fixture(): object
     {
-        return json_decode(file_get_contents(dirname(__DIR__).'/fixtures/openweathermap/onecall.json'));
+        return json_decode(file_get_contents(__DIR__.'/../fixtures/openweathermap/onecall.json'));
     }
 
     public function testRequestsUseKeyCoordinatesAndMetricUnits(): void
@@ -53,7 +53,7 @@ class OpenWeatherMapTest extends TestCase
 
     public function testNormalizedMetadata(): void
     {
-        $data = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100);
+        $data = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100);
         $n = $data['normalized'];
 
         $this->assertSame('Gedinne', $n['city']);
@@ -63,15 +63,15 @@ class OpenWeatherMapTest extends TestCase
         $this->assertSame(100, $n['asl']);
         $this->assertSame('Europe/Brussels', $n['timezone']);
         $this->assertEquals(2, $n['timezonediff']);
-        $this->assertSame(self::fixture()->current->sunrise, $n['sunrise']);
-        $this->assertSame(self::fixture()->current->sunset, $n['sunset']);
+        $this->assertSame($this->fixture()->current->sunrise, $n['sunrise']);
+        $this->assertSame($this->fixture()->current->sunset, $n['sunset']);
         $this->assertNull($data['current']);
     }
 
     public function testForecastRowsAreCurrentPlusHourlyPlusDaily(): void
     {
-        $fixture = self::fixture();
-        $forecasts = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
+        $fixture = $this->fixture();
+        $forecasts = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
 
         $this->assertCount(1 + count($fixture->hourly) + count($fixture->daily), $forecasts);
         $this->assertSame($fixture->current->dt, $forecasts[0]['timestamp']);
@@ -81,9 +81,9 @@ class OpenWeatherMapTest extends TestCase
 
     public function testHourlyRowMapping(): void
     {
-        $fixture = self::fixture();
+        $fixture = $this->fixture();
         $hour = $fixture->hourly[0];
-        $row = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100)['normalized']['forecasts'][1];
+        $row = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'][1];
 
         $this->assertEquals($hour->temp, $row['temperature']);
         $this->assertEquals($hour->feels_like, $row['apparent_temperature']);
@@ -102,8 +102,8 @@ class OpenWeatherMapTest extends TestCase
 
     public function testHourlyRainUsesOneHourValue(): void
     {
-        $fixture = self::fixture();
-        $forecasts = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
+        $fixture = $this->fixture();
+        $forecasts = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
 
         $checked = 0;
         foreach ($fixture->hourly as $i => $hour) {
@@ -116,8 +116,8 @@ class OpenWeatherMapTest extends TestCase
 
     public function testDailyRowsUseDayValuesAndFlatRain(): void
     {
-        $fixture = self::fixture();
-        $forecasts = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
+        $fixture = $this->fixture();
+        $forecasts = new OpenWeatherMap('key', self::client())->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
         $offset = 1 + count($fixture->hourly);
 
         foreach ($fixture->daily as $i => $day) {
@@ -130,7 +130,7 @@ class OpenWeatherMapTest extends TestCase
 
     public function testMissingOptionalFieldsFallBack(): void
     {
-        $onecall = self::fixture();
+        $onecall = $this->fixture();
         $onecall->hourly = [(object) [
             'dt' => 1, 'temp' => 1, 'feels_like' => 1, 'pressure' => 1000, 'humidity' => 50,
             'uvi' => 0, 'clouds' => 40, 'wind_speed' => 7, 'wind_deg' => 90,
@@ -139,10 +139,10 @@ class OpenWeatherMapTest extends TestCase
         ]];
         $onecall->daily = [];
         $client = new MockHttpClient(fn (string $m, string $url) => new MockResponse(
-            str_contains($url, 'onecall') ? json_encode($onecall) : file_get_contents(dirname(__DIR__).'/fixtures/openweathermap/weather.json')
+            str_contains($url, 'onecall') ? json_encode($onecall) : file_get_contents(__DIR__.'/../fixtures/openweathermap/weather.json')
         ));
 
-        $row = (new OpenWeatherMap('key', $client))->getNormalizedData(50, 5, 100)['normalized']['forecasts'][1];
+        $row = new OpenWeatherMap('key', $client)->getNormalizedData(50, 5, 100)['normalized']['forecasts'][1];
 
         $this->assertEquals(7, $row['wind_gust_speed']);
         $this->assertSame(0, $row['precipation_probability']);
