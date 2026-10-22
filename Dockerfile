@@ -1,4 +1,4 @@
-FROM php:8.5.12-fpm-trixie
+FROM php:8.6.0RC2-fpm-trixie
 
 ADD . /app
 
