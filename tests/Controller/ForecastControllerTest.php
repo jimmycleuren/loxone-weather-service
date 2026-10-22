@@ -10,7 +10,7 @@ class ForecastControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/forecast/?coord=5.0000,50.0000&asl=100&format=1');
+        $client->request('GET', '/forecast/?coord=5.0000,50.0000&asl=100&format=1');
 
         $this->assertSame(200, $client->getResponse()->getStatusCode());
     }

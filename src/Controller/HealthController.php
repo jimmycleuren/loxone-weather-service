@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +13,6 @@ class HealthController extends AbstractController
     #[Route('/health', name: 'health')]
     public function index(): Response
     {
-        return new Response("healty");
+        return new Response('healty');
     }
 }

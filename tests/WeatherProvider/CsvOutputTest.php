@@ -6,8 +6,8 @@ use App\LocationProvider\LocationProvider;
 use App\WeatherProvider\OpenWeatherMap;
 use App\WeatherProvider\Weatherbit;
 use App\WeatherProvider\WeatherProvider;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
  */
 class CsvOutputTest extends TestCase
 {
-    private const GOLDEN = __DIR__.'/../fixtures/openweathermap/expected.csv';
+    private const string GOLDEN = __DIR__.'/../fixtures/openweathermap/expected.csv';
 
     private array $serverBackup;
     private string $tzBackup;
@@ -31,7 +31,7 @@ class CsvOutputTest extends TestCase
         $this->serverBackup = $_SERVER;
         $this->tzBackup = date_default_timezone_get();
         date_default_timezone_set('Europe/Brussels');
-        (new RedisAdapter(RedisAdapter::createConnection($_SERVER['REDIS_URL'])))->clear();
+        new RedisAdapter(RedisAdapter::createConnection($_SERVER['REDIS_URL']))->clear();
     }
 
     protected function tearDown(): void
@@ -50,7 +50,7 @@ class CsvOutputTest extends TestCase
         );
     }
 
-    private static function normalized(array $forecasts, array $overrides = []): array
+    private function normalized(array $forecasts, array $overrides = []): array
     {
         return ['normalized' => array_merge([
             'city' => 'Testville', 'lat' => 50, 'lon' => 5, 'asl' => 100, 'country' => 'BE',
@@ -59,7 +59,7 @@ class CsvOutputTest extends TestCase
         ], $overrides)];
     }
 
-    private static function forecastRow(array $overrides = []): array
+    private function forecastRow(array $overrides = []): array
     {
         return array_merge([
             'timestamp' => 1792612800, 'temperature' => 9.35, 'apparent_temperature' => 6.39,
@@ -70,7 +70,7 @@ class CsvOutputTest extends TestCase
         ], $overrides);
     }
 
-    private static function csvRows(string $csv): array
+    private function csvRows(string $csv): array
     {
         preg_match('#<station>\n(.*)\n</station>#s', $csv, $m);
 
@@ -110,7 +110,7 @@ class CsvOutputTest extends TestCase
         $this->assertStringEndsWith("</station>\n", $csv);
         $this->assertStringContainsString("<valid_until>2100-01-01</valid_until>\n", $csv);
 
-        $rows = self::csvRows($csv);
+        $rows = $this->csvRows($csv);
         $header = array_shift($rows);
         $this->assertCount(11, $header);
         $this->assertSame(['', 'Gedinne', '5', '50', '100', 'BE', 'Europe/Brussels', 'UTC+2'], array_slice($header, 0, 8));
@@ -134,15 +134,15 @@ class CsvOutputTest extends TestCase
 
         $weatherbit = $this->createStub(Weatherbit::class);
         $weatherbit->method('getNormalizedData')->willReturnMap([
-            [60, 6, 10, self::normalized([self::forecastRow()], ['city' => 'North'])],
-            [40, 4, 20, self::normalized([self::forecastRow()], ['city' => 'South'])],
+            [60, 6, 10, $this->normalized([$this->forecastRow()], ['city' => 'North'])],
+            [40, 4, 20, $this->normalized([$this->forecastRow()], ['city' => 'South'])],
         ]);
 
         $provider = $this->provider($locations, $weatherbit);
         $provider->updateCache();
 
-        $this->assertSame('North', self::csvRows($provider->getCSV('north'))[0][1]);
-        $this->assertSame('South', self::csvRows($provider->getCSV('south'))[0][1]);
+        $this->assertSame('North', $this->csvRows($provider->getCSV('north'))[0][1]);
+        $this->assertSame('South', $this->csvRows($provider->getCSV('south'))[0][1]);
         $this->assertNull($provider->getCSV('unknown'));
     }
 
@@ -155,7 +155,7 @@ class CsvOutputTest extends TestCase
         $locations->setCoordinates('u', 50, 5, 100);
 
         $weatherbit = $this->createMock(Weatherbit::class);
-        $weatherbit->expects($this->once())->method('getNormalizedData')->willReturn(self::normalized([]));
+        $weatherbit->expects($this->once())->method('getNormalizedData')->willReturn($this->normalized([]));
         $owm = $this->createMock(OpenWeatherMap::class);
         $owm->expects($this->never())->method('getNormalizedData');
 
@@ -182,11 +182,11 @@ class CsvOutputTest extends TestCase
         $locations = new LocationProvider(new NullLogger());
         $locations->setCoordinates('u', 50, 5, 100);
         $weatherbit = $this->createStub(Weatherbit::class);
-        $weatherbit->method('getNormalizedData')->willReturn(self::normalized([self::forecastRow()], ['timezonediff' => $diff]));
+        $weatherbit->method('getNormalizedData')->willReturn($this->normalized([$this->forecastRow()], ['timezonediff' => $diff]));
         $provider = $this->provider($locations, $weatherbit);
         $provider->updateCache();
 
-        $this->assertSame($expected, self::csvRows($provider->getCSV('u'))[0][7]);
+        $this->assertSame($expected, $this->csvRows($provider->getCSV('u'))[0][7]);
     }
 
     public static function timezoneProvider(): array
@@ -201,11 +201,11 @@ class CsvOutputTest extends TestCase
         $locations = new LocationProvider(new NullLogger());
         $locations->setCoordinates('u', 50, 5, 100);
         $weatherbit = $this->createStub(Weatherbit::class);
-        $weatherbit->method('getNormalizedData')->willReturn(self::normalized([self::forecastRow(['snow' => $snow])]));
+        $weatherbit->method('getNormalizedData')->willReturn($this->normalized([$this->forecastRow(['snow' => $snow])]));
         $provider = $this->provider($locations, $weatherbit);
         $provider->updateCache();
 
-        $this->assertSame($expected, self::csvRows($provider->getCSV('u'))[1][13]);
+        $this->assertSame($expected, $this->csvRows($provider->getCSV('u'))[1][13]);
     }
 
     public static function snowProvider(): array
@@ -224,11 +224,11 @@ class CsvOutputTest extends TestCase
         $locations = new LocationProvider(new NullLogger());
         $locations->setCoordinates('u', 50, 5, 100);
         $weatherbit = $this->createStub(Weatherbit::class);
-        $weatherbit->method('getNormalizedData')->willReturn(self::normalized([self::forecastRow(['icon' => $icon])]));
+        $weatherbit->method('getNormalizedData')->willReturn($this->normalized([$this->forecastRow(['icon' => $icon])]));
         $provider = $this->provider($locations, $weatherbit);
         $provider->updateCache();
 
-        $this->assertSame($expected, self::csvRows($provider->getCSV('u'))[1][17]);
+        $this->assertSame($expected, $this->csvRows($provider->getCSV('u'))[1][17]);
     }
 
     public static function iconProvider(): array

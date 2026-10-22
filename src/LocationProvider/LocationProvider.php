@@ -7,12 +7,10 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class LocationProvider
 {
-    private $logger;
     private $cache;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
         $client = RedisAdapter::createConnection($_SERVER['REDIS_URL']);
         $this->cache = new RedisAdapter($client);
     }

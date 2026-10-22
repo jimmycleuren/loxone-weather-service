@@ -14,7 +14,7 @@ class ForecastController extends AbstractController
     #[Route('/forecast/', name: 'forecast')]
     public function index(LocationProvider $locationProvider, WeatherProvider $weatherProvider, Request $request): Response
     {
-        list($lon, $lat) = explode(",", $request->get('coord'));
+        [$lon, $lat] = explode(',', $request->get('coord'));
         $asl = $request->get('asl');
         $format = $request->get('format');
         $user = (string) $request->query->get('user', '');
@@ -27,11 +27,11 @@ class ForecastController extends AbstractController
             $weather = $weatherProvider->getCSV($user);
         }
 
-        if ($format && $format == 1) {
+        if ($format && 1 == $format) {
             return new Response($weather);
         }
 
-        if ($format && $format == 2) { //lets return the same content for format 2 as we don't know the changes
+        if ($format && 2 == $format) { // lets return the same content for format 2 as we don't know the changes
             return new Response($weather);
         }
 
