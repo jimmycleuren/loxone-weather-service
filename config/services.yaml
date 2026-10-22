@@ -6,9 +6,6 @@ parameters:
     env(WEATHERBIT_KEY): ''
     env(OPENWEATHERMAP_KEY): ''
     env(REDIS_URL): ''
-    env(LAT): ''
-    env(LON): ''
-    env(ASL): ''
 
 services:
     _defaults:
@@ -42,7 +39,3 @@ services:
             $source: '%env(WEATHER_PROVIDER)%'
             $weatherbitKey: '%env(WEATHERBIT_KEY)%'
             $openWeatherMapKey: '%env(OPENWEATHERMAP_KEY)%'
-
-    App\LocationProvider\LocationProvider:
-        arguments:
-            $defaultLocation: ['%env(LAT)%', '%env(LON)%', '%env(ASL)%']

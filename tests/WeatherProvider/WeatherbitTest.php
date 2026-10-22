@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\WeatherProvider;
 
 use App\Forecast\Forecast;
+use App\Location\Location;
 use App\WeatherProvider\Weatherbit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -43,7 +46,7 @@ class WeatherbitTest extends TestCase
 
         $weatherbit = new Weatherbit('test', $client);
 
-        $data = $weatherbit->fetchForecast(0, 0, 0);
+        $data = $weatherbit->fetchForecast(new Location('0', '0', '0'));
         $this->assertInstanceOf(Forecast::class, $data);
         $this->assertSame(2, $client->getRequestsCount());
 
@@ -78,7 +81,7 @@ class WeatherbitTest extends TestCase
             str_contains($url, '/current') ? $current : $daily
         )));
 
-        $n = new Weatherbit('key', $client)->fetchForecast(50.9, 5.5, 60);
+        $n = new Weatherbit('key', $client)->fetchForecast(new Location('50.9', '5.5', '60'));
 
         $this->assertSame('Genk', $n->city);
         $this->assertSame('60', $n->asl);
@@ -106,7 +109,7 @@ class WeatherbitTest extends TestCase
         ];
         $client = new MockHttpClient(fn () => new MockResponse(json_encode(['data' => [$row]])));
 
-        $forecasts = new Weatherbit('key', $client)->fetchForecast(0, 0, 0)->rows;
+        $forecasts = new Weatherbit('key', $client)->fetchForecast(new Location('0', '0', '0'))->rows;
 
         $this->assertSame('CLOUDS_HEAVY', $forecasts[0]->icon?->value);
     }

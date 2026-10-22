@@ -1,126 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 1
-			path: src/Command/UpdateWeatherCommand.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Command/UpdateWeatherCommand.php
-
-		-
-			message: '#^Parameter \#2 \$string of function explode expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Controller/ForecastController.php
-
-		-
-			message: '#^Cannot access offset ''asl'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Cannot access offset ''lat'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Cannot access offset ''lon'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Cannot access offset mixed on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:getCoordinates\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:getCoordinates\(\) has parameter \$user with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:getUsers\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$asl with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$lat with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$lon with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Method App\\LocationProvider\\LocationProvider\:\:setCoordinates\(\) has parameter \$user with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Parameter \#1 \$array of function array_keys expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Part \$asl \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Part \$lat \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Part \$lon \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
-			message: '#^Part \$user \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/LocationProvider/LocationProvider.php
-
-		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -313,42 +193,6 @@ parameters:
 			path: src/WeatherProvider/OpenWeatherMap.php
 
 		-
-			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getCurrentWeather\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getCurrentWeather\(\) has parameter \$lat with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getCurrentWeather\(\) has parameter \$lon with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getForecast\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getForecast\(\) has parameter \$lat with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\OpenWeatherMap\:\:getForecast\(\) has parameter \$lon with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
 			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -359,78 +203,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Part \$lat \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Part \$lon \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
-			path: src/WeatherProvider/OpenWeatherMap.php
-
-		-
-			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Cannot access offset mixed on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Cannot use array destructuring on mixed\.$#'
-			identifier: offsetAccess.nonArray
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\WeatherProvider\:\:getCSV\(\) has parameter \$user with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\WeatherProvider\:\:updateCache\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Parameter \#1 \$lat of method App\\WeatherProvider\\WeatherProviderInterface\:\:fetchForecast\(\) expects float\|int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Parameter \#2 \$lon of method App\\WeatherProvider\\WeatherProviderInterface\:\:fetchForecast\(\) expects float\|int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Parameter \#3 \$asl of method App\\WeatherProvider\\WeatherProviderInterface\:\:fetchForecast\(\) expects int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Part \$user \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 1
-			path: src/WeatherProvider/WeatherProvider.php
 
 		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
@@ -619,48 +391,6 @@ parameters:
 			path: src/WeatherProvider/Weatherbit.php
 
 		-
-			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lat with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lon with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lat with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lon with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Parameter \#1 \$datetime of function strtotime expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
 			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -673,21 +403,15 @@ parameters:
 			path: src/WeatherProvider/Weatherbit.php
 
 		-
-			message: '#^Part \$lat \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Part \$lon \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
-			path: src/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Call to an undefined method object\:\:getCoordinates\(\)\.$#'
+			message: '#^Call to an undefined method object\:\:getLocation\(\)\.$#'
 			identifier: method.notFound
-			count: 1
+			count: 3
+			path: tests/Controller/ForecastControllerTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getUsers\(\)\.$#'
+			identifier: method.notFound
+			count: 2
 			path: tests/Controller/ForecastControllerTest.php
 
 		-
@@ -751,46 +475,10 @@ parameters:
 			path: tests/Controller/HealthControllerTest.php
 
 		-
-			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has no return type specified\.$#'
-			identifier: missingType.return
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''App\\\\Location\\\\Location'' and App\\Location\\Location will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
 			count: 1
-			path: tests/Doubles/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lat with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: tests/Doubles/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getCurrentWeather\(\) has parameter \$lon with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: tests/Doubles/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: tests/Doubles/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lat with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: tests/Doubles/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Method App\\Tests\\Doubles\\WeatherProvider\\Weatherbit\:\:getForecast\(\) has parameter \$lon with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: tests/Doubles/WeatherProvider/Weatherbit.php
-
-		-
-			message: '#^Cannot use array destructuring on mixed\.$#'
-			identifier: offsetAccess.nonArray
-			count: 2
-			path: tests/LocationProvider/LocationProviderTest.php
+			path: tests/Location/LocationTest.php
 
 		-
 			message: '#^Method App\\Tests\\Smoke\\FrontControllerTest\:\:envProvider\(\) return type has no value type specified in iterable type array\.$#'
@@ -879,6 +567,12 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to float\.$#'
 			identifier: cast.double
+			count: 1
+			path: tests/WeatherProvider/CsvOutputTest.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
 			count: 1
 			path: tests/WeatherProvider/CsvOutputTest.php
 

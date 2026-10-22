@@ -80,6 +80,9 @@ jobs:
             code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: weather.loxone.com' 'http://127.0.0.1:8080/forecast/?coord=5.0000,50.0000&asl=100&format=1&user=e2e')
             echo "forecast status: $code"
             test "$code" = "200"
+            code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: weather.loxone.com' 'http://127.0.0.1:8080/forecast/?format=1')
+            echo "forecast without coord: $code"
+            test "$code" = "400"
           }
 
           echo "::group::file storage (default)"

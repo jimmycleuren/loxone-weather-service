@@ -6,6 +6,7 @@ namespace App\Tests\Doubles\WeatherProvider;
 
 use App\Forecast\Forecast;
 use App\Forecast\ForecastRow;
+use App\Location\Location;
 
 class Weatherbit extends \App\WeatherProvider\Weatherbit
 {
@@ -13,15 +14,7 @@ class Weatherbit extends \App\WeatherProvider\Weatherbit
     {
     }
 
-    public function getCurrentWeather($lat, $lon)
-    {
-    }
-
-    public function getForecast($lat, $lon)
-    {
-    }
-
-    public function fetchForecast(float|int|string $lat, float|int|string $lon, int|string $asl): Forecast
+    public function fetchForecast(Location $location): Forecast
     {
         return new Forecast(
             city: 'Hasselt',

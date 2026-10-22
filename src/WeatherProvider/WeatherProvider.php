@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\WeatherProvider;
 
 use App\Forecast\Forecast;
-use App\LocationProvider\LocationProvider;
+use App\Location\LocationProvider;
 use App\Loxone\LoxoneCsvRenderer;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
@@ -26,7 +28,7 @@ class WeatherProvider
         $this->source = WeatherSource::fromConfig($source);
     }
 
-    public function updateCache()
+    public function updateCache(): void
     {
         $data = [];
         $provider = $this->selectProvider();
@@ -34,10 +36,13 @@ class WeatherProvider
         $this->logger->info('Updating cache');
         if ($provider instanceof WeatherProviderInterface) {
             foreach ($this->locationProvider->getUsers() as $user) {
-                [$lat, $lon, $asl] = $this->locationProvider->getCoordinates($user);
+                $location = $this->locationProvider->getLocation($user);
+                if (!$location instanceof \App\Location\Location) {
+                    continue;
+                }
 
                 $this->logger->info("Updating cache for $user");
-                $data[$user] = $provider->fetchForecast($lat, $lon, $asl);
+                $data[$user] = $provider->fetchForecast($location);
             }
         }
 
@@ -47,7 +52,7 @@ class WeatherProvider
         $this->store->save($item);
     }
 
-    public function getCSV($user): ?string
+    public function getCSV(string $user): ?string
     {
         $item = $this->store->getItem('weather');
 
@@ -56,7 +61,8 @@ class WeatherProvider
         }
 
         // Entries written by older releases (arrays) are a miss: the caller refreshes.
-        $forecast = $item->get()[$user] ?? null;
+        $data = $item->get();
+        $forecast = \is_array($data) ? $data[$user] ?? null : null;
 
         return $forecast instanceof Forecast ? $this->renderer->render($forecast) : null;
     }

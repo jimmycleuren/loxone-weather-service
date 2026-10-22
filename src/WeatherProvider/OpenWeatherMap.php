@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\WeatherProvider;
 
 use App\Forecast\Forecast;
 use App\Forecast\ForecastRow;
 use App\Forecast\WeatherCode;
+use App\Location\Location;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OpenWeatherMap implements WeatherProviderInterface
@@ -13,24 +16,24 @@ class OpenWeatherMap implements WeatherProviderInterface
     {
     }
 
-    public function getCurrentWeather($lat, $lon)
+    public function getCurrentWeather(string $lat, string $lon): mixed
     {
         $response = $this->client->request('GET', "https://api.openweathermap.org/data/2.5/weather?appid=$this->key&lat=$lat&lon=$lon&units=metric");
 
         return json_decode($response->getContent());
     }
 
-    public function getForecast($lat, $lon)
+    public function getForecast(string $lat, string $lon): mixed
     {
         $response = $this->client->request('GET', "https://api.openweathermap.org/data/3.0/onecall?appid=$this->key&lat=$lat&lon=$lon&units=metric");
 
         return json_decode($response->getContent());
     }
 
-    public function fetchForecast(float|int|string $lat, float|int|string $lon, int|string $asl): Forecast
+    public function fetchForecast(Location $location): Forecast
     {
-        $current = $this->getCurrentWeather($lat, $lon);
-        $forecast = $this->getForecast($lat, $lon);
+        $current = $this->getCurrentWeather($location->latitude, $location->longitude);
+        $forecast = $this->getForecast($location->latitude, $location->longitude);
 
         $rows = [];
         foreach (array_merge([$forecast->current], $forecast->hourly, $forecast->daily) as $row) {
@@ -59,7 +62,7 @@ class OpenWeatherMap implements WeatherProviderInterface
             city: Json::string($current->name),
             lat: Json::float($forecast->lat),
             lon: Json::float($forecast->lon),
-            asl: (string) $asl,
+            asl: $location->altitude,
             country: Json::string($current->sys->country),
             timezone: Json::string($forecast->timezone),
             utcOffsetHours: Json::int($forecast->timezone_offset) / 3600,

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\WeatherProvider;
 
 use App\Forecast\WeatherCode;
+use App\Location\Location;
 use App\WeatherProvider\OpenWeatherMap;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +44,7 @@ class OpenWeatherMapTest extends TestCase
     {
         $requested = [];
         $owm = new OpenWeatherMap('secret', self::client($requested));
-        $owm->fetchForecast(50, 5, 100);
+        $owm->fetchForecast(new Location('50', '5', '100'));
 
         $this->assertCount(2, $requested);
         foreach ($requested as $url) {
@@ -54,7 +57,7 @@ class OpenWeatherMapTest extends TestCase
 
     public function testNormalizedMetadata(): void
     {
-        $n = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100);
+        $n = new OpenWeatherMap('key', self::client())->fetchForecast(new Location('50', '5', '100'));
 
         $this->assertSame('Gedinne', $n->city);
         $this->assertSame('BE', $n->country);
@@ -70,7 +73,7 @@ class OpenWeatherMapTest extends TestCase
     public function testForecastRowsAreCurrentPlusHourlyPlusDaily(): void
     {
         $fixture = $this->fixture();
-        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows;
+        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(new Location('50', '5', '100'))->rows;
 
         $this->assertCount(1 + count($fixture->hourly) + count($fixture->daily), $forecasts);
         $this->assertSame($fixture->current->dt, $forecasts[0]->timestamp);
@@ -82,7 +85,7 @@ class OpenWeatherMapTest extends TestCase
     {
         $fixture = $this->fixture();
         $hour = $fixture->hourly[0];
-        $row = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows[1];
+        $row = new OpenWeatherMap('key', self::client())->fetchForecast(new Location('50', '5', '100'))->rows[1];
 
         $this->assertEquals($hour->temp, $row->temperature);
         $this->assertEquals($hour->feels_like, $row->apparentTemperature);
@@ -102,7 +105,7 @@ class OpenWeatherMapTest extends TestCase
     public function testHourlyRainUsesOneHourValue(): void
     {
         $fixture = $this->fixture();
-        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows;
+        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(new Location('50', '5', '100'))->rows;
 
         $checked = 0;
         foreach ($fixture->hourly as $i => $hour) {
@@ -116,7 +119,7 @@ class OpenWeatherMapTest extends TestCase
     public function testDailyRowsUseDayValuesAndFlatRain(): void
     {
         $fixture = $this->fixture();
-        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(50, 5, 100)->rows;
+        $forecasts = new OpenWeatherMap('key', self::client())->fetchForecast(new Location('50', '5', '100'))->rows;
         $offset = 1 + count($fixture->hourly);
 
         foreach ($fixture->daily as $i => $day) {
@@ -141,7 +144,7 @@ class OpenWeatherMapTest extends TestCase
             str_contains($url, 'onecall') ? json_encode($onecall) : file_get_contents(__DIR__.'/../fixtures/openweathermap/weather.json')
         ));
 
-        $row = new OpenWeatherMap('key', $client)->fetchForecast(50, 5, 100)->rows[1];
+        $row = new OpenWeatherMap('key', $client)->fetchForecast(new Location('50', '5', '100'))->rows[1];
 
         $this->assertEquals(7, $row->windGustSpeed);
         $this->assertSame(0.0, $row->precipitationProbability);
@@ -162,7 +165,7 @@ class OpenWeatherMapTest extends TestCase
             str_contains($url, 'onecall') ? json_encode($onecall) : file_get_contents(__DIR__.'/../fixtures/openweathermap/weather.json')
         ));
 
-        $row = new OpenWeatherMap('key', $client)->fetchForecast(50, 5, 100)->rows[1];
+        $row = new OpenWeatherMap('key', $client)->fetchForecast(new Location('50', '5', '100'))->rows[1];
 
         $this->assertSame(0.5, $row->snow);
         $this->assertSame(0.0, $row->precipitationIntensity);

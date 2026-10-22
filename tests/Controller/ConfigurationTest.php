@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class ConfigurationTest extends KernelTestCase
 {
-    private const array VARIABLES = ['WEATHER_PROVIDER', 'WEATHERBIT_KEY', 'OPENWEATHERMAP_KEY', 'REDIS_URL', 'LAT', 'LON', 'ASL'];
+    private const array VARIABLES = ['WEATHER_PROVIDER', 'WEATHERBIT_KEY', 'OPENWEATHERMAP_KEY', 'REDIS_URL'];
 
     /** @var array<string, array{mixed, mixed, string|false}> */
     private array $backup = [];
