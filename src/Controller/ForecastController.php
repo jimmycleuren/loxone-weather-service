@@ -17,7 +17,7 @@ class ForecastController extends AbstractController
         list($lon, $lat) = explode(",", $request->get('coord'));
         $asl = $request->get('asl');
         $format = $request->get('format');
-        $user = $request->get('user');
+        $user = (string) $request->query->get('user', '');
 
         $locationProvider->setCoordinates($user, $lat, $lon, $asl);
 

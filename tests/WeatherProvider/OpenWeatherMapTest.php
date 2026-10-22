@@ -3,6 +3,7 @@
 namespace App\Tests\WeatherProvider;
 
 use App\WeatherProvider\OpenWeatherMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -35,7 +36,7 @@ class OpenWeatherMapTest extends TestCase
         return json_decode(file_get_contents(dirname(__DIR__).'/fixtures/openweathermap/onecall.json'));
     }
 
-    public function testRequestsUseKeyCoordinatesAndMetricUnits()
+    public function testRequestsUseKeyCoordinatesAndMetricUnits(): void
     {
         $requested = [];
         $owm = new OpenWeatherMap('secret', self::client($requested));
@@ -50,7 +51,7 @@ class OpenWeatherMapTest extends TestCase
         }
     }
 
-    public function testNormalizedMetadata()
+    public function testNormalizedMetadata(): void
     {
         $data = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100);
         $n = $data['normalized'];
@@ -67,7 +68,7 @@ class OpenWeatherMapTest extends TestCase
         $this->assertNull($data['current']);
     }
 
-    public function testForecastRowsAreCurrentPlusHourlyPlusDaily()
+    public function testForecastRowsAreCurrentPlusHourlyPlusDaily(): void
     {
         $fixture = self::fixture();
         $forecasts = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
@@ -78,7 +79,7 @@ class OpenWeatherMapTest extends TestCase
         $this->assertSame(end($fixture->daily)->dt, end($forecasts)['timestamp']);
     }
 
-    public function testHourlyRowMapping()
+    public function testHourlyRowMapping(): void
     {
         $fixture = self::fixture();
         $hour = $fixture->hourly[0];
@@ -99,7 +100,7 @@ class OpenWeatherMapTest extends TestCase
         $this->assertSame('CLEAR', $row['icon']); // weather id 800
     }
 
-    public function testHourlyRainUsesOneHourValue()
+    public function testHourlyRainUsesOneHourValue(): void
     {
         $fixture = self::fixture();
         $forecasts = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
@@ -113,7 +114,7 @@ class OpenWeatherMapTest extends TestCase
         $this->assertGreaterThan(0, $checked, 'fixture should contain hourly rain');
     }
 
-    public function testDailyRowsUseDayValuesAndFlatRain()
+    public function testDailyRowsUseDayValuesAndFlatRain(): void
     {
         $fixture = self::fixture();
         $forecasts = (new OpenWeatherMap('key', self::client()))->getNormalizedData(50, 5, 100)['normalized']['forecasts'];
@@ -127,7 +128,7 @@ class OpenWeatherMapTest extends TestCase
         }
     }
 
-    public function testMissingOptionalFieldsFallBack()
+    public function testMissingOptionalFieldsFallBack(): void
     {
         $onecall = self::fixture();
         $onecall->hourly = [(object) [
@@ -150,13 +151,10 @@ class OpenWeatherMapTest extends TestCase
         $this->assertSame('SNOW_MEDIUM', $row['icon']);
     }
 
-    /**
-     * @dataProvider codeProvider
-     */
-    public function testWeatherCodeMapping(int $code, ?string $expected)
+    #[DataProvider('codeProvider')]
+    public function testWeatherCodeMapping(int $code, ?string $expected): void
     {
         $method = new \ReflectionMethod(OpenWeatherMap::class, 'codeToText');
-        $method->setAccessible(true);
 
         $this->assertSame($expected, $method->invoke(new OpenWeatherMap('key', new MockHttpClient()), $code));
     }

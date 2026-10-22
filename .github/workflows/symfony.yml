@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  SYMFONY_DEPRECATIONS_HELPER: max[direct]=0
+permissions:
+  contents: read
 
 jobs:
-  symfony:
-
+  tests:
+    name: tests (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
 
     services:
@@ -28,17 +28,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php: ['8.4', '8.5']
+        include:
+          - php: '8.5'
+            coverage: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php }}
           extensions: mbstring, intl
-          coverage: ${{ matrix.php-versions == '8.3' && 'pcov' || 'none' }}
+          coverage: ${{ matrix.coverage && 'pcov' || 'none' }}
           tools: composer:v2
 
       - name: Get composer cache directory
@@ -46,18 +49,21 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php${{ matrix.php-versions }}-composer-
+            ${{ runner.os }}-php${{ matrix.php }}-composer-
 
       - name: Validate composer.json and composer.lock
-        run: composer validate
+        run: composer validate --strict
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Security audit
+        run: composer audit --locked
 
       - name: Run phpstan
         run: composer phpstan
@@ -68,17 +74,29 @@ jobs:
       - name: Lint container
         run: ./bin/console lint:container
 
-      - name: Security audit
-        run: composer audit --locked
-
       - name: Run phpunit
+        if: ${{ !matrix.coverage }}
+        env:
+          REDIS_URL: "redis://localhost:6379"
+        run: vendor/bin/phpunit
+
+      - name: Run phpunit with coverage (minimum 95% lines)
+        if: ${{ matrix.coverage }}
         env:
           REDIS_URL: "redis://localhost:6379"
         run: |
-          if [ "${{ matrix.php-versions }}" = "8.3" ]; then
-            # Project PHPUnit, not simple-phpunit: simple-phpunit ships its own nikic/php-parser,
-            # which clashes with the project's copy once php-code-coverage loads it.
-            vendor/bin/phpunit --coverage-text --colors=never
-          else
-            php bin/phpunit
-          fi
+          vendor/bin/phpunit --coverage-text=coverage.txt --colors=never
+          cat coverage.txt
+          lines=$(grep -m1 -E '^\s*Lines:' coverage.txt | grep -oE '[0-9]+\.[0-9]+' | head -1)
+          echo "Line coverage: ${lines}%"
+          awk -v l="$lines" 'BEGIN { exit (l + 0 >= 95) ? 0 : 1 }'
+
+  # Single, stable status check for branch protection: matrix entries come and go
+  # (PHP versions), this name does not.
+  ci:
+    if: always()
+    needs: [ tests ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All test jobs passed
+        run: test "${{ needs.tests.result }}" = "success"

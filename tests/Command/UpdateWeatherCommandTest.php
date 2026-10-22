@@ -7,13 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class UpdateWeatherCommandTest extends KernelTestCase
 {
-    use ProphecyTrait;
-
-    public function testExecute()
+    public function testExecute(): void
     {
         $kernel = static::createKernel();
         $application = new Application($kernel);
@@ -21,75 +18,67 @@ class UpdateWeatherCommandTest extends KernelTestCase
         $command = $application->find('app:update-weather');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'command' => $command->getName()
+            'command' => $command->getName(),
         ]);
 
         $this->assertEquals(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
-    public function testFailure()
-    {
-        $kernel = static::createKernel();
-        $application = new Application($kernel);
-
-        $kernel->boot();
-        $weatherProvider = $this->prophesize(WeatherProvider::class);
-        $weatherProvider->updateCache()->willThrow(new \RuntimeException());
-        $kernel->getContainer()->set('App\WeatherProvider\WeatherProvider', $weatherProvider->reveal());
-
-        $command = $application->find('app:update-weather');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute([
-            'command' => $command->getName()
-        ]);
-
-        $this->assertEquals(Command::FAILURE, $commandTester->getStatusCode());
-    }
-
-    private function testerWith($weatherProvider): CommandTester
+    private function testerWith(WeatherProvider $weatherProvider): CommandTester
     {
         $kernel = static::createKernel();
         $application = new Application($kernel);
         $kernel->boot();
-        $kernel->getContainer()->set('App\WeatherProvider\WeatherProvider', $weatherProvider);
+        $kernel->getContainer()->set(WeatherProvider::class, $weatherProvider);
 
         return new CommandTester($application->find('app:update-weather'));
     }
 
-    public function testEveryRefreshesRepeatedly()
+    public function testFailure(): void
     {
-        $weatherProvider = $this->prophesize(WeatherProvider::class);
-        $weatherProvider->updateCache()->shouldBeCalledTimes(3);
+        $weatherProvider = $this->createStub(WeatherProvider::class);
+        $weatherProvider->method('updateCache')->willThrowException(new \RuntimeException());
 
-        $tester = $this->testerWith($weatherProvider->reveal());
+        $tester = $this->testerWith($weatherProvider);
+        $tester->execute([]);
+
+        $this->assertEquals(Command::FAILURE, $tester->getStatusCode());
+    }
+
+    public function testEveryRefreshesRepeatedly(): void
+    {
+        $weatherProvider = $this->createMock(WeatherProvider::class);
+        $weatherProvider->expects($this->exactly(3))->method('updateCache');
+
+        $tester = $this->testerWith($weatherProvider);
         $tester->execute(['--every' => '0', '--iterations' => '3']);
 
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 
-    public function testEveryKeepsRunningAfterAFailedRefresh()
+    public function testEveryKeepsRunningAfterAFailedRefresh(): void
     {
         $calls = 0;
-        $weatherProvider = $this->prophesize(WeatherProvider::class);
-        $weatherProvider->updateCache()->will(function () use (&$calls) {
+        $weatherProvider = $this->createMock(WeatherProvider::class);
+        $weatherProvider->expects($this->exactly(2))->method('updateCache')->willReturnCallback(function () use (&$calls): void {
             if (1 === ++$calls) {
                 throw new \RuntimeException('provider down');
             }
-        })->shouldBeCalledTimes(2);
+        });
 
-        $tester = $this->testerWith($weatherProvider->reveal());
+        $tester = $this->testerWith($weatherProvider);
         $tester->execute(['--every' => '0', '--iterations' => '2']);
 
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
         $this->assertStringContainsString('provider down', $tester->getDisplay());
     }
 
-    public function testEveryRejectsNonNumericInterval()
+    public function testEveryRejectsNonNumericInterval(): void
     {
-        $weatherProvider = $this->prophesize(WeatherProvider::class);
-        $weatherProvider->updateCache()->shouldNotBeCalled();
+        $weatherProvider = $this->createMock(WeatherProvider::class);
+        $weatherProvider->expects($this->never())->method('updateCache');
 
-        $tester = $this->testerWith($weatherProvider->reveal());
+        $tester = $this->testerWith($weatherProvider);
         $tester->execute(['--every' => 'often']);
 
         $this->assertEquals(Command::INVALID, $tester->getStatusCode());

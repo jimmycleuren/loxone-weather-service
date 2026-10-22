@@ -2,8 +2,8 @@
 
 namespace App\Tests\Smoke;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Requests go through the real front controller (public/index.php + symfony/runtime)
@@ -57,15 +57,9 @@ class FrontControllerTest extends TestCase
         $this->fail("built-in server did not start on $address");
     }
 
-    /**
-     * @dataProvider envProvider
-     */
-    public function testHealthBodyIsClean(string $env)
+    #[DataProvider('envProvider')]
+    public function testHealthBodyIsClean(string $env): void
     {
-        if ('dev' === $env && Kernel::VERSION_ID < 60400) {
-            $this->markTestSkipped('symfony/runtime < 6.4 calls ini_set("assert.warning"), which PHP 8.3 deprecates; debug mode prints that into the body. Re-enabled automatically by the Symfony 6.4 upgrade.');
-        }
-
         $base = $this->startServer($env);
 
         $this->assertSame('healty', file_get_contents($base.'/health'));
