@@ -3,7 +3,7 @@ FROM php:8.3.36-fpm-bookworm
 ADD . /app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends zip unzip git procps supervisor acl \
+    && apt-get install -y --no-install-recommends zip unzip git procps supervisor \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -15,15 +15,12 @@ COPY docker/php2shell.ini /usr/local/etc/php/conf.d/zz-php2shell.ini
 
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN mkdir -p /app/var/cache/prod
-RUN mkdir -p /app/var/log/prod
-RUN chmod 777 -R /app/var
-
-RUN setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwX var
-RUN setfacl -R -m u:www-data:rwX -m u:$(whoami):rwX var
-
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN composer install --verbose --prefer-dist --no-dev --optimize-autoloader --no-scripts
+
+# php-fpm workers and the refresh job both run as www-data and must own var/
+# (ACLs set with setfacl do not survive the image build, so do not rely on them).
+RUN mkdir -p /app/var/cache /app/var/log && chown -R www-data:www-data /app/var
 
 CMD ["/usr/bin/supervisord"]
